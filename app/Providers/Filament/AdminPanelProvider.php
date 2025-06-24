@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;

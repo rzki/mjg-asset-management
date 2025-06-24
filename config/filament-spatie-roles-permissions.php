@@ -37,7 +37,7 @@ return [
      */
     'should_use_simple_modal_resource' => [
         'permissions' => false,
-        'roles' => true,
+        'roles' => false,
     ],
 
     /*
