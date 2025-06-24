@@ -9,11 +9,8 @@ use Filament\Resources\Pages\EditRecord;
 class EditEmployeeDivision extends EditRecord
 {
     protected static string $resource = EmployeeDivisionResource::class;
-
-    protected function getHeaderActions(): array
+    protected function getRedirectUrl(): string
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return $this->getResource()::getUrl('index');
     }
 }

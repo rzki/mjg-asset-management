@@ -2,28 +2,44 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeDivisionResource\Pages;
-use App\Filament\Resources\EmployeeDivisionResource\RelationManagers;
-use App\Models\EmployeeDivision;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use App\Models\EmployeeDivision;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\EmployeeDivisionResource\Pages;
+use App\Filament\Resources\EmployeeDivisionResource\RelationManagers;
 
 class EmployeeDivisionResource extends Resource
 {
     protected static ?string $model = EmployeeDivision::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Divisions';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationParentItem = 'Employees';
+    protected static ?string $navigationGroup = 'User Management';
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole(['Super Admin', 'Admin']);
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Grid::make(1)
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Division Name')
+                            ->required()
+                            ->maxLength(255),
+                    ]),
             ]);
     }
 
@@ -31,7 +47,10 @@ class EmployeeDivisionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Division Name')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
