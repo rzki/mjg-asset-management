@@ -16,6 +16,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/.htacess
+/app/Providers/AppServiceProvider.php
 /storage/*.key
 /storage/pail
 /vendor
