@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('employee_number')->unique();
             $table->string('initial', 3)->unique();
-            $
+            $table->enum('status', ['active', 'terminated']);
             $table->timestamps();
         });
     }
