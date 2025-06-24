@@ -16,6 +16,10 @@ class RoleResource extends Resource
     protected static ?string $model = Role::class;
     protected static ?string $navigationGroup = 'User Management';
     protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->hasRole('Super Admin');
+    }
     public static function canViewAny(): bool
     {
         return auth()->user()->hasRole(['Super Admin']);
