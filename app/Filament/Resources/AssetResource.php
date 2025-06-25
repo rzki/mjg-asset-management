@@ -78,6 +78,7 @@ class AssetResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at'))
             ->columns([
                 TextColumn::make('asset_name')
                     ->label('Asset Name')
