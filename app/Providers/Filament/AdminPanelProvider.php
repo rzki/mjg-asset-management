@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
@@ -31,7 +32,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('')
             ->spa()
             ->login()
+            ->profile()
             ->defaultThemeMode(ThemeMode::Light)
+            ->userMenuItems([
+                'profile' => MenuItem::make()->label('Edit Profile')
+            ])
             ->colors([
                 'primary' => Color::Blue,
             ])
