@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('assetId')->unique();
             $table->string('asset_name');
             $table->string('asset_code')->unique();
+            $table->year('asset_year_bought');
             $table->string('asset_type');
             $table->string('asset_serial_number');
             $table->enum('asset_condition', ['New', 'Good', 'Fair', 'Poor']);
