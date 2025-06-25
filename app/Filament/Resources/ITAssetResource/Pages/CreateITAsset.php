@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\AssetResource\Pages;
+namespace App\Filament\Resources\ITAssetResource\Pages;
 
 use Filament\Actions;
 use Milon\Barcode\DNS2D;
 use Illuminate\Support\Facades\Storage;
-use App\Filament\Resources\AssetResource;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Resources\ITAssetResource;
 
-class CreateAsset extends CreateRecord
+class CreateITAsset extends CreateRecord
 {
-    protected static string $resource = AssetResource::class;
+    protected static string $resource = ITAssetResource::class;
     protected static ?string $title = 'Create IT Asset';
     protected function mutateFormDataBeforeCreate(array $data): array
     {

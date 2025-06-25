@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Asset extends Model
+class ITAsset extends Model
 {
     protected $guarded = ['id'];
-
+    protected $table = 'it_assets';
     public function getRouteKeyName(): string
     {
         return 'assetId';
@@ -19,5 +19,9 @@ class Asset extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'pic_id');
+    }
+    public function maintenance()
+    {
+        return $this->hasMany(ITAssetMaintenance::class, 'asset_id');
     }
 }

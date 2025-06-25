@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\AssetResource\Pages;
+namespace App\Filament\Resources\ITAssetResource\Pages;
 
-use App\Filament\Resources\AssetResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\ITAssetResource;
 
-class ViewAsset extends ViewRecord
+class ViewITAsset extends ViewRecord
 {
-    protected static string $resource = AssetResource::class;
+    protected static string $resource = ITAssetResource::class;
     protected static ?string $title = 'View IT Asset';
     protected function getHeaderActions(): array
     {
