@@ -47,7 +47,7 @@
                 <tr>
                     <th class="text-start">Entry Created By</th>
                     <td>
-                        {{ $asset->user->employee->initial . ' ' . strtoupper($asset->created_at->format('D M Y')) }}
+                        {{ $asset->user->employee->initial . ' ' . strtoupper($asset->created_at->format('d M Y')) }}
                     </td>
                 </tr>
             </tbody>
