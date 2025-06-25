@@ -12,6 +12,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\AssetResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,8 +21,8 @@ use App\Filament\Resources\AssetResource\RelationManagers;
 class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-document';
+    protected static ?string $slug = 'it-assets';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -35,6 +36,14 @@ class AssetResource extends Resource
                     ->label('Asset Code')
                     ->required()
                     ->maxLength(50),
+                DatePicker::make('asset_year_bought')
+                    ->label('Asset Year')
+                    ->native(false)
+                    ->displayFormat('Y')
+                    ->format('Y')
+                    ->closeOnDateSelection()
+                    ->default(now())
+                    ->required(),
                 TextInput::make('asset_type')
                     ->label('Type')
                     ->required()
@@ -51,7 +60,6 @@ class AssetResource extends Resource
                         'Fair' => 'Fair',
                         'Poor' => 'Poor',
                     ])
-                    ->columnSpanFull()
                     ->required(),
                 Textarea::make('asset_notes')
                     ->label('History/Notes')
@@ -79,11 +87,15 @@ class AssetResource extends Resource
                     ->label('Asset Code')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('asset_year_bought')
+                    ->label('Year Bought')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('pic_id')
                     ->label('Created By')
                     ->formatStateUsing(function ($record){
                         $initial = $record->user->employee->initial ?? '';
-                        $signature = $initial.' '.strtoupper(now('Asia/Jakarta')->format('d M Y'));
+                        $signature = $initial . ' ' . strtoupper($record->created_at->format('d M Y'));
                         return $signature;
                     })
                     ->sortable()
@@ -95,6 +107,10 @@ class AssetResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Show')
+                    ->label('Show')
+                    ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

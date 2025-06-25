@@ -14,8 +14,6 @@ class ViewAsset extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
-            Actions\DeleteAction::make()
-                ->visible(fn ($record) => $record->pic_id === auth()->user()->id),
         ];
     }
 }
