@@ -40,6 +40,7 @@ class EmployeeResource extends Resource
                             ->placeholder('Select User'),
                     ]),
                 Section::make('Employee Details')
+                    ->columns(2)
                     ->schema([
                         TextInput::make('name')
                             ->label('Employee Name')
@@ -47,8 +48,7 @@ class EmployeeResource extends Resource
                             ->maxLength(255),
                         TextInput::make('initial')
                             ->label('Initial')
-                            ->maxLength(3)
-                            ->columnSpanFull(),
+                            ->maxLength(3),
                         // Select::make('division_id')
                         //     ->label('Division')
                         //     ->relationship('division', 'name')
