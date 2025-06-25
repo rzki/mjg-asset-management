@@ -35,6 +35,9 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->profile()
             ->defaultThemeMode(ThemeMode::Light)
+            ->brandLogo(asset('assets/images/LOGO-MEDQUEST-HD.png'))
+            ->brandLogoHeight('2rem')
+            ->favicon(asset('assets/images/Medquest-Favicon.png'))
             ->userMenuItems([
                 'profile' => MenuItem::make()->label('Edit Profile')
             ])
