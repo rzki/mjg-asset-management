@@ -45,26 +45,22 @@ class EmployeeResource extends Resource
                             ->label('Employee Name')
                             ->required()
                             ->maxLength(255),
-                        TextInput::make('employee_number')
-                            ->label('Employee Number')
-                            ->required()
-                            ->maxLength(8),
                         TextInput::make('initial')
                             ->label('Initial')
                             ->maxLength(3)
                             ->columnSpanFull(),
-                        Select::make('division_id')
-                            ->label('Division')
-                            ->relationship('division', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->placeholder('Select Division'),
-                        Select::make('position_id')
-                            ->label('Position')
-                            ->relationship('position', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->placeholder('Select Position'),
+                        // Select::make('division_id')
+                        //     ->label('Division')
+                        //     ->relationship('division', 'name')
+                        //     ->searchable()
+                        //     ->preload()
+                        //     ->placeholder('Select Division'),
+                        // Select::make('position_id')
+                        //     ->label('Position')
+                        //     ->relationship('position', 'name')
+                        //     ->searchable()
+                        //     ->preload()
+                        //     ->placeholder('Select Position'),
                     ]),
             ]);
     }
