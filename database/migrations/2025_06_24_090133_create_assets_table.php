@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('asset_location');
             $table->string('asset_user');
             $table->foreignId('pic_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('barcode');
             $table->timestamps();
         });
     }
