@@ -110,12 +110,12 @@ class ITAssetResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('Show')
-                    ->label('Show')
+                Tables\Actions\Action::make('Detail')
+                    ->label('Detail')
                     ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
                     ->openUrlInNewTab(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
