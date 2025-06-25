@@ -21,9 +21,14 @@ use App\Filament\Resources\AssetResource\RelationManagers;
 class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
+    protected static ?string $navigationLabel = 'IT Assets';
     protected static ?string $slug = 'it-assets';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationGroup = 'Asset Management';
+    public static function getBreadcrumb(): string
+    {
+        return 'IT Assets';
+    }
     public static function form(Form $form): Form
     {
         return $form

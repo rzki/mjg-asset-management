@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewAsset extends ViewRecord
 {
     protected static string $resource = AssetResource::class;
-
+    protected static ?string $title = 'View IT Asset';
     protected function getHeaderActions(): array
     {
         return [

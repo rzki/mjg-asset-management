@@ -11,6 +11,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAsset extends CreateRecord
 {
     protected static string $resource = AssetResource::class;
+    protected static ?string $title = 'Create IT Asset';
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['assetId'] = \Illuminate\Support\Str::orderedUuid();
