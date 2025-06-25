@@ -3,14 +3,15 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use Filament\Forms\Components\Grid;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use App\Models\EmployeeDivision;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -33,12 +34,16 @@ class EmployeeDivisionResource extends Resource
     {
         return $form
             ->schema([
-                Grid::make(1)
+                Grid::make(2)
                     ->schema([
                         TextInput::make('name')
                             ->label('Division Name')
                             ->required()
                             ->maxLength(255),
+                        TextInput::make('initial')
+                            ->label('Initial')
+                            ->required()
+                            ->maxLength(3),
                     ]),
             ]);
     }
@@ -47,8 +52,12 @@ class EmployeeDivisionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Division Name')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('initial')
+                    ->label('Initial')
                     ->searchable()
                     ->sortable(),
             ])
