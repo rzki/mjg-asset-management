@@ -109,6 +109,8 @@ class ITAssetMaintenanceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at'))
+            ->emptyStateHeading('No IT Asset Maintenance Logs Found')
             ->columns([
                 TextColumn::make('maintenance_date')
                     ->label('Maintenance Date')
