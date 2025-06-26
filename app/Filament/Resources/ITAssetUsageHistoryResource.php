@@ -94,6 +94,11 @@ class ITAssetUsageHistoryResource extends Resource
                     ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' - '.$record->name),
             ])
             ->actions([
+                Tables\Actions\Action::make('view_asset')
+                    ->label('View Asset')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn ($record) => route('filament.admin.resources.it-assets.view', ['record' => $record->asset->assetId])),
+                    // ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
