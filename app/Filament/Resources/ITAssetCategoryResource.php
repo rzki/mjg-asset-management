@@ -45,6 +45,7 @@ class ITAssetCategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No IT Asset Categories Found')
             ->columns([
                 TextColumn::make('code')
                     ->label('Code')
