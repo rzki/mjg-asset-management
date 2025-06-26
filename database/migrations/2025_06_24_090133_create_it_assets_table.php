@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('asset_brand');
             $table->string('asset_model');
             $table->string('asset_serial_number');
+            $table->foreignId('asset_category_id')->constrained('it_asset_categories')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('asset_condition', ['New', 'Used', 'Defect', 'Disposed']);
             $table->text('asset_notes');
             $table->string('asset_location');
