@@ -17,13 +17,6 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->timestamps();
         });
-        Schema::table('it_assets', function (Blueprint $table) {
-            $table->foreignId('asset_category_id')
-                ->after('asset_model')
-                ->constrained('it_asset_categories')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
     }
 
     /**
