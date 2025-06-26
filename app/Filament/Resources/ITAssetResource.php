@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Infolists\Components\Section;
 use Filament\Tables;
 use App\Models\ITAsset;
 use Filament\Forms\Form;
@@ -172,7 +173,8 @@ class ITAssetResource extends Resource
     {
         return $infolist
             ->schema([
-                Fieldset::make('Asset Details')
+                Section::make('Asset Details')
+                    ->columns(4)
                     ->schema([
                         TextEntry::make('asset_name')
                             ->label('Asset Name'),
