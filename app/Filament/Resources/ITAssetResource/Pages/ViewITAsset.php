@@ -13,6 +13,10 @@ class ViewITAsset extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('asset_detail')
+                ->label('Asset Detail')
+                ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
+                ->color('primary'),
             Actions\EditAction::make(),
         ];
     }
