@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ITAssetResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -117,6 +118,10 @@ class ITAssetResource extends Resource
                     ->getStateUsing(fn ($record) => $record->category ? "{$record->category->name}" : 'N/A')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('asset_condition')
+                    ->label('Condition')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('pic_id')
                     ->label('Created By')
                     ->formatStateUsing(function ($record){
@@ -128,7 +133,20 @@ class ITAssetResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('category_id')
+                    ->label('Category')
+                    ->relationship('category', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->code} - {$record->name}")
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('asset_condition')
+                    ->label('Condition')
+                    ->options([
+                        'New' => 'New',
+                        'Used' => 'Used',
+                        'Defect' => 'Defect',
+                        'Disposed' => 'Disposed',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\Action::make('Detail')

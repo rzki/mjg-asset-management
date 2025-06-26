@@ -28,4 +28,8 @@ class ITAsset extends Model
     {
         return $this->belongsTo(ITAssetCategory::class, 'asset_category_id');
     }
+    public function usageHistory()
+    {
+        return $this->hasMany(ITAssetUsageHistory::class, 'asset_id');
+    }
 }
