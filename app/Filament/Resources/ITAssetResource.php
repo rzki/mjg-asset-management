@@ -98,6 +98,7 @@ class ITAssetResource extends Resource
     {
         return $table
             ->modifyQueryUsing(fn(Builder $query) => $query->orderByDesc('created_at'))
+            ->emptyStateHeading('No IT Assets Found')
             ->columns([
                 TextColumn::make('asset_name')
                     ->label('Asset Name')
