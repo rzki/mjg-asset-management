@@ -14,35 +14,35 @@
             <tbody>
                 <tr>
                     <th class="text-start">Asset Name</th>
-                    <td>{{ $asset->asset_name }}</td>
+                    <td>{{ $asset->asset_name ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Asset Code</th>
-                    <td>{{ $asset->asset_code }}</td>
+                    <td>{{ $asset->asset_code ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Asset Year</th>
-                    <td>{{ $asset->asset_year_bought }}</td>
+                    <td>{{ $asset->asset_year_bought ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Serial Number</th>
-                    <td>{{ $asset->asset_serial_number }}</td>
+                    <td>{{ $asset->asset_serial_number ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Condition</th>
-                    <td>{{ $asset->asset_condition }}</td>
+                    <td>{{ $asset->asset_condition ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Notes</th>
-                    <td>{{ $asset->asset_notes }}</td>
+                    <td>{{ $asset->asset_notes ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Location</th>
-                    <td>{{ $asset->asset_location }}</td>
+                    <td>{{ $asset->asset_location ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">User</th>
-                    <td>{{ $asset->asset_user }}</td>
+                    <td>{{ $asset->employee->name ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Entry Created By</th>
