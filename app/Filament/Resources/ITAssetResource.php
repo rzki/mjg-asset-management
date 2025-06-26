@@ -86,8 +86,7 @@ class ITAssetResource extends Resource
                     ->options(function () {
                         return \App\Models\User::all()->pluck('name', 'id');
                     })
-                    ->searchable()
-                    ->required(),
+                    ->searchable(),
                 Textarea::make('asset_remark')
                     ->label('Remark')
                     ->maxLength(500)

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('asset_notes')->nullable();
             $table->text('asset_remarks')->nullable();
             $table->string('asset_location');
-            $table->string('asset_user');
+            $table->string('asset_user')->nullable();
             $table->foreignId('pic_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('barcode');
             $table->timestamps();
