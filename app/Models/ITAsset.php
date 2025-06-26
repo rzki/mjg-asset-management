@@ -18,7 +18,7 @@ class ITAsset extends Model
     }
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'pic_id');
+        return $this->belongsTo(Employee::class, 'asset_user_id');
     }
     public function maintenance()
     {

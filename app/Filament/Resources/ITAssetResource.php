@@ -7,6 +7,7 @@ use Filament\Tables;
 use App\Models\ITAsset;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -15,9 +16,12 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\ITAssetResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ITAssetResource\RelationManagers;
+use App\Filament\Resources\ITAssetResource\RelationManagers\UsageHistoryRelationManager;
 
 class ITAssetResource extends Resource
 {
@@ -164,10 +168,48 @@ class ITAssetResource extends Resource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Fieldset::make('Asset Details')
+                    ->schema([
+                        TextEntry::make('asset_name')
+                            ->label('Asset Name'),
+                        TextEntry::make('asset_code')
+                            ->label('Asset Code'),
+                        TextEntry::make('asset_serial_number')
+                            ->label('Serial Number'),
+                        TextEntry::make('asset_year_bought')
+                            ->label('Year Bought')
+                            ->date('Y'),
+                        TextEntry::make('asset_brand')
+                            ->label('Brand'),
+                        TextEntry::make('asset_model')
+                            ->label('Model'),
+                        TextEntry::make('category.name')
+                            ->label('Category'),
+                        TextEntry::make('asset_condition')
+                            ->label('Condition'),
+                        TextEntry::make('asset_location')
+                            ->label('Location'),
+                        TextEntry::make('employee.name')
+                            ->label('Asset User')
+                            ->getStateUsing(fn ($record) => $record->employee ? $record->employee->name : 'N/A'),
+                        TextEntry::make('asset_notes')
+                            ->label('Notes')
+                            ->limit(100),
+                        TextEntry::make('asset_remark')
+                            ->label('Remark')
+                            ->limit(100),
+                    ]),
+            ]);
+    }
+
     public static function getRelations(): array
     {
         return [
-            //
+            UsageHistoryRelationManager::class
         ];
     }
 

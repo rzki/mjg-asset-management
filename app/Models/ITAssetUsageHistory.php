@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ITAssetUsageHistory extends Model
 {
     protected $guarded = ['id'];
-    protected $table = 'it_asset_usage_history';
+    protected $table = 'it_asset_usage_histories';
 
     public function asset()
     {
