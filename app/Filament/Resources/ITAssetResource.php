@@ -41,6 +41,10 @@ class ITAssetResource extends Resource
                     ->label('Asset Code')
                     ->required()
                     ->maxLength(50),
+                TextInput::make('asset_serial_number')
+                    ->label('Serial Number')
+                    ->required()
+                    ->maxLength(100),
                 DatePicker::make('asset_year_bought')
                     ->label('Asset Year')
                     ->native(false)
@@ -49,21 +53,31 @@ class ITAssetResource extends Resource
                     ->closeOnDateSelection()
                     ->default(now())
                     ->required(),
-                TextInput::make('asset_type')
-                    ->label('Type')
+                TextInput::make('asset_brand')
+                    ->label('Brand')
+                    ->required(),
+                TextInput::make('asset_model')
+                    ->label('Model')
                     ->required()
                     ->maxLength(100),
-                TextInput::make('asset_serial_number')
-                    ->label('Serial Number')
-                    ->required()
-                    ->maxLength(100),
+                Select::make('asset_category')
+                    ->label('Category')
+                    ->options([
+                        'Laptop' => 'Laptop',
+                        'Desktop' => 'Desktop',
+                        'Printer' => 'Printer',
+                        'Network Device' => 'Network Device',
+                        'Software' => 'Software',
+                        'Other' => 'Other',
+                    ])
+                    ->required(),
                 Select::make('asset_condition')
                     ->label('Condition')
                     ->options([
                         'New' => 'New',
-                        'Good' => 'Good',
-                        'Fair' => 'Fair',
-                        'Poor' => 'Poor',
+                        'Used' => 'Used',
+                        'Defect' => 'Defect',
+                        'Disposed' => 'Disposed',
                     ])
                     ->required(),
                 Textarea::make('asset_notes')
@@ -74,9 +88,8 @@ class ITAssetResource extends Resource
                     ->label('Location')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('asset_user')
-                    ->label('Asset User')
-                    ->maxLength(255),
+                Select::make('asset_user')
+                    ->label('Asset User'),
             ]);
     }
 

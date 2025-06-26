@@ -24,4 +24,8 @@ class ITAsset extends Model
     {
         return $this->hasMany(ITAssetMaintenance::class, 'asset_id');
     }
+    public function category()
+    {
+        return $this->belongsTo(ITAssetCategory::class, 'asset_category_id');
+    }
 }
