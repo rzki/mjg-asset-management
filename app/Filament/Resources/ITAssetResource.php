@@ -36,11 +36,8 @@ class ITAssetResource extends Resource
                 TextInput::make('asset_name')
                     ->label('Asset Name')
                     ->required()
+                    ->columnSpanFull()
                     ->maxLength(255),
-                TextInput::make('asset_code')
-                    ->label('Asset Code')
-                    ->required()
-                    ->maxLength(50),
                 TextInput::make('asset_serial_number')
                     ->label('Serial Number')
                     ->required()
@@ -60,16 +57,12 @@ class ITAssetResource extends Resource
                     ->label('Model')
                     ->required()
                     ->maxLength(100),
-                Select::make('asset_category')
+                Select::make('asset_category_id')
                     ->label('Category')
-                    ->options([
-                        'Laptop' => 'Laptop',
-                        'Desktop' => 'Desktop',
-                        'Printer' => 'Printer',
-                        'Network Device' => 'Network Device',
-                        'Software' => 'Software',
-                        'Other' => 'Other',
-                    ])
+                    ->relationship('category', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->code} - {$record->name}")
+                    ->preload()
+                    ->searchable()
                     ->required(),
                 Select::make('asset_condition')
                     ->label('Condition')
@@ -89,7 +82,16 @@ class ITAssetResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Select::make('asset_user')
-                    ->label('Asset User'),
+                    ->label('Asset User')
+                    ->options(function () {
+                        return \App\Models\User::all()->pluck('name', 'id');
+                    })
+                    ->searchable()
+                    ->required(),
+                Textarea::make('asset_remark')
+                    ->label('Remark')
+                    ->maxLength(500)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -110,6 +112,11 @@ class ITAssetResource extends Resource
                     ->label('Year Bought')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('asset_category_id')
+                    ->label('Category')
+                    ->getStateUsing(fn ($record) => $record->category ? "{$record->category->name}" : 'N/A')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('pic_id')
                     ->label('Created By')
                     ->formatStateUsing(function ($record){

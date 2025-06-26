@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('asset_serial_number');
             $table->foreignId('asset_category_id')->constrained('it_asset_categories')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('asset_condition', ['New', 'Used', 'Defect', 'Disposed']);
-            $table->text('asset_notes');
+            $table->text('asset_notes')->nullable();
+            $table->text('asset_remarks')->nullable();
             $table->string('asset_location');
             $table->string('asset_user');
             $table->foreignId('pic_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');

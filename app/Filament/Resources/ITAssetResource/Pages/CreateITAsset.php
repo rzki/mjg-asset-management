@@ -3,7 +3,10 @@
 namespace App\Filament\Resources\ITAssetResource\Pages;
 
 use Filament\Actions;
+use App\Models\ITAsset;
 use Milon\Barcode\DNS2D;
+use Illuminate\Support\Str;
+use App\Models\ITAssetCategory;
 use Illuminate\Support\Facades\Storage;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ITAssetResource;
@@ -14,8 +17,12 @@ class CreateITAsset extends CreateRecord
     protected static ?string $title = 'Create IT Asset';
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['assetId'] = \Illuminate\Support\Str::orderedUuid();
-        $data['pic_id'] = auth()->user()->id; // Automatically set the current user as the PIC
+        $data['assetId'] = Str::orderedUuid();
+        $categoryCode = ITAssetCategory::where('id', $data['asset_category_id'])->value('code');
+        $autoIncrement = ITAsset::where('asset_category_id', $data['asset_category_id'])->count() + 1;
+        $autoIncrementPadded = str_pad($autoIncrement, 3, '0', STR_PAD_LEFT);
+        $data['asset_code'] = 'MJG-INV-ITD.11-' . $categoryCode . '-' . $autoIncrementPadded;
+        $data['pic_id'] = auth()->user()->id;
         $route = route('assets.show', ['assetId' => $data['assetId']]);
         $qr = new DNS2D();
         $qrCodeImage = base64_decode($qr->getBarcodePNG($route, 'QRCODE,H'));
