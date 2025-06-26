@@ -49,18 +49,12 @@ class EmployeeResource extends Resource
                         TextInput::make('initial')
                             ->label('Initial')
                             ->maxLength(3),
-                        // Select::make('division_id')
-                        //     ->label('Division')
-                        //     ->relationship('division', 'name')
-                        //     ->searchable()
-                        //     ->preload()
-                        //     ->placeholder('Select Division'),
-                        // Select::make('position_id')
-                        //     ->label('Position')
-                        //     ->relationship('position', 'name')
-                        //     ->searchable()
-                        //     ->preload()
-                        //     ->placeholder('Select Position'),
+                        Select::make('division_id')
+                            ->label('Division')
+                            ->relationship('division', 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' '.$record->name)
+                            ->searchable()
+                            ->preload(),
                     ]),
             ]);
     }
