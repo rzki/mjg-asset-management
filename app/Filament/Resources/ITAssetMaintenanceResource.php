@@ -25,8 +25,8 @@ use App\Filament\Resources\ITAssetMaintenanceResource\RelationManagers;
 class ITAssetMaintenanceResource extends Resource
 {
     protected static ?string $model = ITAssetMaintenance::class;
-    protected static ?string $navigationLabel = 'IT Asset Maintenance Log';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Maintenance Log';
+    protected static ?int $navigationSort = 2;
     protected static ?string $slug = 'it-asset-maintenance-log';
     protected static ?string $navigationParentItem = 'IT Assets';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

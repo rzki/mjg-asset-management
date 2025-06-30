@@ -23,11 +23,11 @@ class ITAssetUsageHistoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Asset Management';
     protected static ?string $navigationParentItem = 'IT Assets';
-    protected static ?string $navigationLabel = 'IT Asset Usage History';
+    protected static ?string $navigationLabel = 'Usage History';
     protected static ?string $modelLabel = 'IT Asset Usage History';
     protected static ?string $pluralModelLabel = 'IT Asset Usage Histories';
     protected static ?string $slug = 'it-asset-usage-histories';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
     public static function getBreadcrumb(): string
     {
         return 'IT Asset Usage History';
