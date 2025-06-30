@@ -76,13 +76,17 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Are you sure you want to delete this user?')
-                    ->modalDescription('This action cannot be undone.'),
+                    ->modalDescription('This action cannot be undone.')
+                    ->successNotificationTitle('User deleted successfully.')
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading('Are you sure you want to delete these users?')
-                        ->modalDescription('This action cannot be undone.'),
+                        ->modalDescription('This action cannot be undone.')
+                        ->successNotificationTitle('Users deleted successfully.')
+                        ->requiresConfirmation(),
                 ]),
             ]);
     }

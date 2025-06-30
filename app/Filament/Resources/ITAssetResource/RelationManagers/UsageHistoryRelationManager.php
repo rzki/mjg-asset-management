@@ -123,6 +123,8 @@ class UsageHistoryRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Are you sure you want to delete this usage history?')
                     ->modalDescription('This action cannot be undone.')
+                    ->successNotificationTitle('Usage history deleted successfully.')
+                    ->requiresConfirmation()
                     ->before(function ($record) {
                         // Before deleting, set asset_user_id to the employee_id of the latest previous usage history (if any)
                         if ($record->asset) {
@@ -144,6 +146,8 @@ class UsageHistoryRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading('Are you sure you want to delete these usage histories?')
                         ->modalDescription('This action cannot be undone.')
+                        ->successNotificationTitle('Usage histories deleted successfully.')
+                        ->requiresConfirmation()
                         ->after(function ($records) {
                             foreach ($records as $record) {
                                 if ($record->asset && is_null($record->usage_end_date)) {

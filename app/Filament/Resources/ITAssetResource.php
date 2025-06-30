@@ -175,6 +175,8 @@ class ITAssetResource extends Resource
                     ->icon(null)    
                     ->modalHeading('Are you sure you want to delete this asset?')
                     ->modalDescription('This action cannot be undone.')
+                    ->successNotificationTitle('Asset deleted successfully.')
+                    ->requiresConfirmation()
                     ->after(function ($record) {
                         // After deleting, delete the asset's usage history
                         if ($record->asset) {
@@ -187,6 +189,8 @@ class ITAssetResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading('Are you sure you want to delete these assets?')
                         ->modalDescription('This action cannot be undone.')
+                        ->successNotificationTitle('Assets deleted successfully.')
+                        ->requiresConfirmation()
                         ->after(function ($records) {
                             foreach ($records as $record) {
                                 if ($record->asset) {
