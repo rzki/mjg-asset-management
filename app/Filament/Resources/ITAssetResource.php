@@ -84,10 +84,10 @@ class ITAssetResource extends Resource
                     ->label('History/Notes')
                     ->maxLength(500)
                     ->columnSpanFull(),
-                TextInput::make('asset_location')
+                Select::make('asset_location_id')
                     ->label('Location')
-                    ->required()
-                    ->maxLength(255),
+                    ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
+                    ->required(),
                 Select::make('asset_user_id')
                     ->label('Asset User')
                     ->options(function () {
@@ -166,11 +166,26 @@ class ITAssetResource extends Resource
                     ->openUrlInNewTab(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->modalHeading('Are you sure you want to delete this asset?')
+                    ->modalDescription('This action cannot be undone.')
+                    ->after(function ($record) {
+                        // After deleting, delete the asset's usage history
+                        if ($record->asset) {
+                            $record->asset->usageHistory()->delete();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->after(function ($records) {
+                            foreach ($records as $record) {
+                                if ($record->asset) {
+                                    $record->asset->usageHistory()->delete();
+                                }
+                            }
+                        }),
                 ]),
             ]);
     }
@@ -199,7 +214,7 @@ class ITAssetResource extends Resource
                             ->label('Category'),
                         TextEntry::make('asset_condition')
                             ->label('Condition'),
-                        TextEntry::make('asset_location')
+                        TextEntry::make('location.name')
                             ->label('Location'),
                         TextEntry::make('employee.name')
                             ->label('Asset User')
