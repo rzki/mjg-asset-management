@@ -13,7 +13,7 @@ class ManageITAssetCategories extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Create Category'),
+                ->label('New IT Asset Category'),
         ];
     }
 }
