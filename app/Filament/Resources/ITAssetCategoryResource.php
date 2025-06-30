@@ -25,6 +25,8 @@ class ITAssetCategoryResource extends Resource
     protected static ?string $navigationParentItem = 'IT Assets';
     protected static ?string $navigationGroup = 'Asset Management';
     protected static ?string $navigationLabel = 'Categories';
+    protected static ?string $modelLabel = 'IT Asset Category';
+    protected static ?string $pluralModelLabel = 'IT Asset Categories';
 
     public static function form(Form $form): Form
     {
