@@ -14,21 +14,32 @@ class ITAssetCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        ITAssetCategory::create([
-            'code' => '001',
-            'name' => 'SERVER',
-        ]);
-        ITAssetCategory::create([
-            'code' => '002',
-            'name' => 'LAPTOP',
-        ]);
-        ITAssetCategory::create([
-            'code' => '003',
-            'name' => 'PC',
-        ]);
-        ITAssetCategory::create([
-            'code' => '004',
-            'name' => 'ACCESSORIES',
+        ITAssetCategory::insert([
+            [
+                'code' => '001',
+                'name' => 'SERVER',
+            ],
+            [
+                'code' => '002',
+                'name' => 'LAPTOP',
+            ],
+            [
+                'code' => '003',
+                'name' => 'PC',
+            ],
+            [
+                'code' => '004',
+                'name' => 'ACCESSORIES',
+            ],
+            [
+                'code' => '005',
+                'name' => 'PRINTER',
+            ],
+            [
+                'code' => '006',
+                'name' => 'SCANNER',
+            ],
+
         ]);
     }
 }
