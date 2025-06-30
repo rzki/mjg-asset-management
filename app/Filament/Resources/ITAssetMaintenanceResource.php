@@ -26,6 +26,8 @@ class ITAssetMaintenanceResource extends Resource
 {
     protected static ?string $model = ITAssetMaintenance::class;
     protected static ?string $navigationLabel = 'Maintenance Log';
+    protected static ?string $modelLabel = 'IT Asset Maintenance Log';
+    protected static ?string $pluralModelLabel = 'IT Asset Maintenance Logs';
     protected static ?int $navigationSort = 2;
     protected static ?string $slug = 'it-asset-maintenance-log';
     protected static ?string $navigationParentItem = 'IT Assets';

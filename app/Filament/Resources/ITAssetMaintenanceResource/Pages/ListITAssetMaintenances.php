@@ -9,8 +9,6 @@ use Filament\Resources\Pages\ListRecords;
 class ListITAssetMaintenances extends ListRecords
 {
     protected static string $resource = ITAssetMaintenanceResource::class;
-
-    protected static ?string $title = 'IT Asset Maintenance Log';
     protected function getHeaderActions(): array
     {
         return [
