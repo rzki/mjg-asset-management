@@ -13,10 +13,14 @@ class ViewITAsset extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('refresh')
+                ->label('Refresh')
+                ->action(fn ($record) => redirect()->route('filament.admin.resources.it-assets.view', ['record' => $record->assetId]))
+                ->color('gray'),
             Actions\Action::make('asset_detail')
-                ->label('Asset Detail')
+                ->label('Detail')
                 ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
-                ->color('primary'),
+                ->color('warning'),
             Actions\EditAction::make(),
         ];
     }

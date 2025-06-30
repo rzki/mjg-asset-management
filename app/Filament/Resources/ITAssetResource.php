@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\Employee;
-use Filament\Forms;
-use Filament\Infolists\Components\Section;
 use Filament\Tables;
 use App\Models\ITAsset;
+use App\Models\Employee;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ITAssetLocation;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
@@ -18,11 +18,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\ITAssetResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ITAssetResource\RelationManagers;
 use App\Filament\Resources\ITAssetResource\RelationManagers\UsageHistoryRelationManager;
 
 class ITAssetResource extends Resource
@@ -87,6 +85,10 @@ class ITAssetResource extends Resource
                 Select::make('asset_location_id')
                     ->label('Location')
                     ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
+                    ->default(function () {
+                        $headOffice = ITAssetLocation::where('name', 'Head Office')->first();
+                        return $headOffice ? $headOffice->id : null;
+                    })
                     ->required(),
                 Select::make('asset_user_id')
                     ->label('Asset User')
@@ -162,11 +164,15 @@ class ITAssetResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('Detail')
                     ->label('Detail')
+                    ->color('warning')
                     ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
                     ->openUrlInNewTab(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->icon(null),
+                Tables\Actions\EditAction::make()
+                    ->icon(null),
                 Tables\Actions\DeleteAction::make()
+                    ->icon(null)    
                     ->modalHeading('Are you sure you want to delete this asset?')
                     ->modalDescription('This action cannot be undone.')
                     ->after(function ($record) {
@@ -215,7 +221,8 @@ class ITAssetResource extends Resource
                         TextEntry::make('asset_condition')
                             ->label('Condition'),
                         TextEntry::make('location.name')
-                            ->label('Location'),
+                            ->label('Location')
+                            ->getStateUsing(fn ($record) => $record->location ? $record->location->name : 'N/A'),
                         TextEntry::make('employee.name')
                             ->label('Asset User')
                             ->getStateUsing(fn ($record) => $record->employee ? $record->employee->name : 'N/A'),

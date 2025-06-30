@@ -70,6 +70,8 @@ class UsageHistoryRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('employee.name')
                     ->label('Assigned To'),
+                TextColumn::make('location.name')
+                    ->label('Location'),
                 TextColumn::make('usage_start_date')
                     ->label('Start Date')
                     ->date(),
