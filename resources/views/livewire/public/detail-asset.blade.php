@@ -14,35 +14,35 @@
             <tbody>
                 <tr>
                     <th class="text-start">Asset Name</th>
-                    <td>{{ $asset->asset_name ?? '-' }}</td>
+                    <td>{{ $asset->asset_name ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Asset Code</th>
-                    <td>{{ $asset->asset_code ?? '-' }}</td>
+                    <td>{{ $asset->asset_code ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Asset Year</th>
-                    <td>{{ $asset->asset_year_bought ?? '-' }}</td>
+                    <td>{{ $asset->asset_year_bought ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Serial Number</th>
-                    <td>{{ $asset->asset_serial_number ?? '-' }}</td>
+                    <td>{{ $asset->asset_serial_number ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Condition</th>
-                    <td>{{ $asset->asset_condition ?? '-' }}</td>
+                    <td>{{ $asset->asset_condition ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Notes</th>
-                    <td>{{ $asset->asset_notes ?? '-' }}</td>
+                    <td>{{ $asset->asset_notes ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Location</th>
-                    <td>{{ $asset->asset_location ?? '-' }}</td>
+                    <td>{{ $asset->asset_location ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">User</th>
-                    <td>{{ $asset->employee->name ?? '-' }}</td>
+                    <td>{{ $asset->employee->name ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">Entry Created By</th>
@@ -50,7 +50,7 @@
                         @if($asset->user && $asset->user->employee)
                             {{ $asset->user->employee->initial . ' ' . strtoupper($asset->created_at->format('d M Y')) }}
                         @else
-                            -
+                            N/A
                         @endif
                     </td>
                 </tr>
