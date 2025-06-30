@@ -10,6 +10,7 @@ class EditITAsset extends EditRecord
 {
     protected static string $resource = ITAssetResource::class;
     protected static ?string $title = 'Edit IT Asset';
+    protected ?bool $hasDatabaseTransactions = true;
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('view', ['record' => $this->record->assetId

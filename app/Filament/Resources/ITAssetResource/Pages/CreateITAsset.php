@@ -11,11 +11,13 @@ use App\Models\ITAssetLocation;
 use Illuminate\Support\Facades\Storage;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ITAssetResource;
+use Illuminate\Support\Facades\DB;
 
 class CreateITAsset extends CreateRecord
 {
     protected static string $resource = ITAssetResource::class;
     protected static ?string $title = 'Create IT Asset';
+    protected ?bool $hasDatabaseTransactions = true;
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['assetId'] = Str::orderedUuid();
