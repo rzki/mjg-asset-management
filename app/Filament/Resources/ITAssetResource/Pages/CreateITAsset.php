@@ -7,6 +7,7 @@ use App\Models\ITAsset;
 use Milon\Barcode\DNS2D;
 use Illuminate\Support\Str;
 use App\Models\ITAssetCategory;
+use App\Models\ITAssetLocation;
 use Illuminate\Support\Facades\Storage;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ITAssetResource;
@@ -18,7 +19,8 @@ class CreateITAsset extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['assetId'] = Str::orderedUuid();
-        
+        $data['asset_location_id'] = ITAssetLocation::where('name', 'Head Office')->value('id');
+
         // Inventory Number Formatting
         $categoryCode = ITAssetCategory::where('id', $data['asset_category_id'])->value('code');
         $autoIncrement = ITAsset::where('asset_category_id', $data['asset_category_id'])->count() + 1;

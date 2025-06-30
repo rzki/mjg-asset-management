@@ -82,20 +82,20 @@ class ITAssetResource extends Resource
                     ->label('History/Notes')
                     ->maxLength(500)
                     ->columnSpanFull(),
-                Select::make('asset_location_id')
-                    ->label('Location')
-                    ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
-                    ->default(function () {
-                        $headOffice = ITAssetLocation::where('name', 'Head Office')->first();
-                        return $headOffice ? $headOffice->id : null;
-                    })
-                    ->required(),
-                Select::make('asset_user_id')
-                    ->label('Asset User')
-                    ->options(function () {
-                        return Employee::all()->pluck('name', 'id');
-                    })
-                    ->searchable(),
+                // Select::make('asset_location_id')
+                //     ->label('Location')
+                //     ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
+                //     ->default(function () {
+                //         $headOffice = ITAssetLocation::where('name', 'Head Office')->first();
+                //         return $headOffice ? $headOffice->id : null;
+                //     })
+                //     ->required(),
+                // Select::make('asset_user_id')
+                //     ->label('Asset User')
+                //     ->options(function () {
+                //         return Employee::all()->pluck('name', 'id');
+                //     })
+                //     ->searchable(),
                 Textarea::make('asset_remark')
                     ->label('Remark')
                     ->maxLength(500)
@@ -210,8 +210,7 @@ class ITAssetResource extends Resource
                         TextEntry::make('asset_serial_number')
                             ->label('Serial Number'),
                         TextEntry::make('asset_year_bought')
-                            ->label('Year Bought')
-                            ->date('Y'),
+                            ->label('Year Bought'),
                         TextEntry::make('asset_brand')
                             ->label('Brand'),
                         TextEntry::make('asset_model')
