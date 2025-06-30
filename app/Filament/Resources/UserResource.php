@@ -46,7 +46,8 @@ class UserResource extends Resource
                             ->preload()
                             ->required()
                             ->searchable()
-                            ->placeholder('Select Roles'),
+                            ->placeholder('Select Roles')
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

@@ -54,7 +54,8 @@ class EmployeeResource extends Resource
                             ->relationship('division', 'name')
                             ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' '.$record->name)
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->columnSpanFull(),
                     ]),
             ]);
     }
