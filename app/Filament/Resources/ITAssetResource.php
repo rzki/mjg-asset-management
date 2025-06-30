@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\Employee;
 use Filament\Forms;
 use Filament\Infolists\Components\Section;
 use Filament\Tables;
@@ -87,10 +88,10 @@ class ITAssetResource extends Resource
                     ->label('Location')
                     ->required()
                     ->maxLength(255),
-                Select::make('asset_user')
+                Select::make('asset_user_id')
                     ->label('Asset User')
                     ->options(function () {
-                        return \App\Models\User::all()->pluck('name', 'id');
+                        return Employee::all()->pluck('name', 'id');
                     })
                     ->searchable(),
                 Textarea::make('asset_remark')
@@ -125,6 +126,11 @@ class ITAssetResource extends Resource
                     ->sortable(),
                 TextColumn::make('asset_condition')
                     ->label('Condition')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('asset_user_id')
+                    ->label('User')
+                    ->getStateUsing(fn ($record) => $record->employee ? "{$record->employee->name}" : 'N/A')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('pic_id')

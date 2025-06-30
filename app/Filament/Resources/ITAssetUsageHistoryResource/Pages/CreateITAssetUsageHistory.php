@@ -25,6 +25,19 @@ class CreateITAssetUsageHistory extends CreateRecord
             ITAsset::where('id', $itAssetUsageHistory->asset_id)->update([
                 'asset_user_id' => $itAssetUsageHistory->employee_id,
             ]);
+            // Find the previous usage history record for this asset, before the newly created one
+            $previousUsage = $itAsset->usageHistory()
+                ->where('id', '!=', $itAssetUsageHistory->id)
+                ->where('usage_start_date', '<', $itAssetUsageHistory->usage_start_date)
+                ->whereNull('usage_end_date')
+                ->orderByDesc('usage_start_date')
+                ->first();
+
+            if ($previousUsage) {
+                $previousUsage->update([
+                    'usage_end_date' => $itAssetUsageHistory->usage_start_date,
+                ]);
+            }
         }
     }
     protected function getRedirectUrl(): string

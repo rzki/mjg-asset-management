@@ -16,4 +16,17 @@ class EditITAssetUsageHistory extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+    protected function afterSave(): void
+    {
+        if ($this->record->asset) {
+            $this->record->asset->asset_user_id = $this->record->employee_id;
+            $this->record->asset->save();
+        }
+    }
+    protected function getRedirectUrl(): string
+    {
+        return route('filament.admin.resources.it-assets.view', [
+            'record' => $this->record->asset->assetId,
+        ]);
+    }
 }

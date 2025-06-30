@@ -61,6 +61,7 @@ class ITAssetUsageHistoryResource extends Resource
     {
         return $table
             ->emptyStateHeading('No IT Asset Usage History Found')
+            ->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at'))
             ->columns([
                 TextColumn::make('asset.asset_code')
                     ->label('Asset Code')
@@ -97,13 +98,39 @@ class ITAssetUsageHistoryResource extends Resource
                 Tables\Actions\Action::make('view_asset')
                     ->label('View Asset')
                     ->icon('heroicon-o-eye')
+                    ->color('dark')
                     ->url(fn ($record) => route('filament.admin.resources.it-assets.view', ['record' => $record->asset->assetId])),
                     // ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->modalHeading('Are you sure you want to delete this usage history?')
+                    ->modalDescription('This action cannot be undone.')
+                    ->before(function ($record) {
+                        // Before deleting, set asset_user_id to the employee_id of the latest previous usage history (if any)
+                        if ($record->asset) {
+                            $previousUsage = $record->asset
+                                ->usageHistory()
+                                ->where('id', '<', $record->id)
+                                ->orderByDesc('usage_end_date')
+                                ->orderByDesc('id')
+                                ->first();
+
+                            $record->asset->asset_user_id = $previousUsage ? $previousUsage->employee_id : null;
+                            $record->asset->save();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->after(function ($records) {
+                            foreach ($records as $record) {
+                                if ($record->asset && is_null($record->usage_end_date)) {
+                                    $record->asset->asset_user_id = null;
+                                    $record->asset->save();
+                                }
+                            }
+                        }),
                 ]),
             ]);
     }
