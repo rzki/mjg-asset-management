@@ -73,10 +73,15 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->modalHeading('Are you sure you want to delete this user?')
+                    ->modalDescription('This action cannot be undone.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->modalHeading('Are you sure you want to delete these users?')
+                        ->modalDescription('This action cannot be undone.'),
                 ]),
             ]);
     }

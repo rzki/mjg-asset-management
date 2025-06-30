@@ -138,10 +138,15 @@ class ITAssetMaintenanceResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->modalHeading('Are you sure you want to delete this maintenance log?')
+                    ->modalDescription('This action cannot be undone.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->modalHeading('Are you sure you want to delete these maintenance logs?')
+                        ->modalDescription('This action cannot be undone.'),
                 ]),
             ]);
     }

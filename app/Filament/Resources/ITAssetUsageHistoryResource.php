@@ -137,6 +137,8 @@ class ITAssetUsageHistoryResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
+                        ->modalHeading('Are you sure you want to delete these usage histories?')
+                        ->modalDescription('This action cannot be undone.')
                         ->after(function ($records) {
                             foreach ($records as $record) {
                                 if ($record->asset && is_null($record->usage_end_date)) {
