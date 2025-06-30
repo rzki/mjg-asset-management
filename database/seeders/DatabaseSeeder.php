@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             PositionSeeder::class,
             EmployeeSeeder::class,
             ITAssetCategorySeeder::class,
+            ITAssetLocationSeeder::class,
         ]);
     }
 }
