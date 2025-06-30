@@ -12,6 +12,12 @@ class EditITAsset extends EditRecord
     protected static ?string $title = 'Edit IT Asset';
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('view', ['record' => $this->record->assetId
+    ]);
+    }
+
+    public function getRelationManagers(): array
+    {
+        return []; // Return an empty array to hide relation managers
     }
 }

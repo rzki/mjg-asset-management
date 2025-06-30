@@ -47,7 +47,11 @@
                 <tr>
                     <th class="text-start">Entry Created By</th>
                     <td>
-                        {{ $asset->user->employee->initial . ' ' . strtoupper($asset->created_at->format('d M Y')) }}
+                        @if($asset->user && $asset->user->employee)
+                            {{ $asset->user->employee->initial . ' ' . strtoupper($asset->created_at->format('d M Y')) }}
+                        @else
+                            -
+                        @endif
                     </td>
                 </tr>
             </tbody>

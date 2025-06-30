@@ -18,12 +18,17 @@ class CreateITAsset extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['assetId'] = Str::orderedUuid();
+        
+        // Inventory Number Formatting
         $categoryCode = ITAssetCategory::where('id', $data['asset_category_id'])->value('code');
         $autoIncrement = ITAsset::where('asset_category_id', $data['asset_category_id'])->count() + 1;
         $autoIncrementPadded = str_pad($autoIncrement, 3, '0', STR_PAD_LEFT);
         $data['asset_code'] = 'MJG-INV-ITD.11-' . $categoryCode . '-' . $autoIncrementPadded;
+
         $data['pic_id'] = auth()->user()->id;
         $route = route('assets.show', ['assetId' => $data['assetId']]);
+
+        // Generate QR Code
         $qr = new DNS2D();
         $qrCodeImage = base64_decode($qr->getBarcodePNG($route, 'QRCODE,H'));
         $path = 'assets/' . $data['assetId'].'.png';

@@ -12,6 +12,10 @@ class ITAsset extends Model
     {
         return 'assetId';
     }
+    public function location()
+    {
+        return $this->hasOne(ITAssetLocation::class, 'asset_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'pic_id');
