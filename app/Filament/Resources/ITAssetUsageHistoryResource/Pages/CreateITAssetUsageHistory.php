@@ -23,6 +23,7 @@ class CreateITAssetUsageHistory extends CreateRecord
         $itAsset = ITAsset::where('id', $itAssetUsageHistory->asset_id)->first();
         if($itAsset){
             ITAsset::where('id', $itAssetUsageHistory->asset_id)->update([
+                'asset_location_id' => $itAssetUsageHistory->asset_location_id,
                 'asset_user_id' => $itAssetUsageHistory->employee_id,
             ]);
             // Find the previous usage history record for this asset, before the newly created one
@@ -35,6 +36,7 @@ class CreateITAssetUsageHistory extends CreateRecord
 
             if ($previousUsage) {
                 $previousUsage->update([
+                    'asset_location_id' => $itAssetUsageHistory->asset_location_id,
                     'usage_end_date' => $itAssetUsageHistory->usage_start_date,
                 ]);
             }

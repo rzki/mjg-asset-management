@@ -20,6 +20,7 @@ class EditITAssetUsageHistory extends EditRecord
     {
         if ($this->record->asset) {
             $this->record->asset->asset_user_id = $this->record->employee_id;
+            $this->record->asset->asset_location_id = $this->record->asset_location_id;
             $this->record->asset->save();
         }
     }

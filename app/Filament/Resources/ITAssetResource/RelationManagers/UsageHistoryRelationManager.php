@@ -43,6 +43,13 @@ class UsageHistoryRelationManager extends RelationManager
                     ->searchable()
                     ->preload()
                     ->required(),
+                Select::make('asset_location_id')
+                    ->label('Location')
+                    ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->columnSpanFull(),
                 DatePicker::make('usage_start_date')
                     ->label('Start Date')
                     ->default(now())
@@ -81,6 +88,7 @@ class UsageHistoryRelationManager extends RelationManager
                     ->after(function ($record) {
                         // Update the asset's asset_user_id to the employee_id of the new usage history
                         if ($record->asset) {
+                            $record->asset->asset_location_id = $record->asset_location_id;
                             $record->asset->asset_user_id = $record->employee_id;
                             $record->asset->save();
                         }
@@ -92,6 +100,7 @@ class UsageHistoryRelationManager extends RelationManager
                             ->first();
 
                         if ($previousUsage && is_null($previousUsage->usage_end_date)) {
+                            $previousUsage->asset_location_id = $record->asset_location_id;
                             $previousUsage->usage_end_date = $record->usage_start_date;
                             $previousUsage->save();
                         }
@@ -104,6 +113,7 @@ class UsageHistoryRelationManager extends RelationManager
                     ->after(function ($record) {
                         // After editing, update the asset's asset_user_id to the employee_id of the latest usage history
                         if ($record->asset) {
+                            $record->asset->asset_location_id = $record->asset_location_id;
                             $record->asset->asset_user_id = $record->employee_id;
                             $record->asset->save();
                         }
@@ -122,6 +132,7 @@ class UsageHistoryRelationManager extends RelationManager
                                 ->first();
 
                             $record->asset->asset_user_id = $previousUsage ? $previousUsage->employee_id : null;
+                            $record->asset->asset_location_id = $previousUsage ? $previousUsage->asset_location_id : null;
                             $record->asset->save();
                         }
                     }),
@@ -133,6 +144,7 @@ class UsageHistoryRelationManager extends RelationManager
                         foreach ($records as $record) {
                             if ($record->asset && is_null($record->usage_end_date)) {
                                 $record->asset->asset_user_id = null;
+                                $record->asset->asset_location_id = null;
                                 $record->asset->save();
                             }
                         }

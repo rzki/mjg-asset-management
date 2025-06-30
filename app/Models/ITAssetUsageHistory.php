@@ -13,7 +13,10 @@ class ITAssetUsageHistory extends Model
     {
         return $this->belongsTo(ITAsset::class, 'asset_id');
     }
-
+    public function location()
+    {
+        return $this->belongsTo(ITAssetLocation::class, 'asset_location_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

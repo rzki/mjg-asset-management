@@ -24,7 +24,10 @@ class ITAssetUsageHistoryResource extends Resource
     protected static ?string $navigationGroup = 'Asset Management';
     protected static ?string $navigationParentItem = 'IT Assets';
     protected static ?string $navigationLabel = 'IT Asset Usage History';
+    protected static ?string $modelLabel = 'IT Asset Usage History';
+    protected static ?string $pluralModelLabel = 'IT Asset Usage Histories';
     protected static ?string $slug = 'it-asset-usage-histories';
+    protected static ?int $navigationSort = 2;
     public static function getBreadcrumb(): string
     {
         return 'IT Asset Usage History';
@@ -48,6 +51,13 @@ class ITAssetUsageHistoryResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required(),
+                Select::make('asset_location_id')
+                    ->label('Location')
+                    ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->columnSpanFull(),
                 DatePicker::make('usage_start_date')
                     ->label('Start Date')
                     ->default(now())
@@ -69,6 +79,10 @@ class ITAssetUsageHistoryResource extends Resource
                     ->searchable(),
                 TextColumn::make('asset.asset_name')
                     ->label('Asset Name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('location.name')
+                    ->label('Location')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('employee.name')
