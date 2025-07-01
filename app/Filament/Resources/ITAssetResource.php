@@ -6,12 +6,15 @@ use Filament\Tables;
 use App\Models\ITAsset;
 use App\Models\Employee;
 use Filament\Forms\Form;
+use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
 use App\Models\ITAssetLocation;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -161,6 +164,30 @@ class ITAssetResource extends Resource
                         'Defect' => 'Defect',
                         'Disposed' => 'Disposed',
                     ]),
+                Filter::make('asset_user_id')
+                    ->form([
+                        Checkbox::make('available')
+                            ->label('Available'),
+                        Checkbox::make('in_use')
+                            ->label('In Use'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['available'] ?? false, fn ($query) => $query->whereNull('asset_user_id'))
+                            ->when($data['in_use'] ?? false, fn ($query) => $query->whereNotNull('asset_user_id'));
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        $indicators = [];
+
+                        if ($data['available'] ?? false) {
+                            $indicators[] = 'Status: Available';
+                        }
+                        if ($data['in_use'] ?? false) {
+                            $indicators[] = 'Status: In Use';
+                        }
+
+                        return empty($indicators) ? null : implode(', ', $indicators);
+                    })
             ])
             ->actions([
                 ActionGroup::make([
