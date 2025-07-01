@@ -16,8 +16,24 @@ class ITAssetWidget extends BaseWidget
         return [
             Stat::make('Total Assets', ITAsset::count())
             ->url(ITAssetResource::getUrl('index')),
-            Stat::make('Assets in Use', ITAsset::where('asset_user_id', '!=', null)->count()),
-            Stat::make('Assets Available', ITAsset::where('asset_user_id', null)->count()),
+            Stat::make('Assets in Use', ITAsset::where('asset_user_id', '!=', null)->count())
+            ->url(ITAssetResource::getUrl('index', [
+                'tableFilters' => [
+                    'asset_user_id' => [
+                        'available' => 'true',
+                        'in_use' => 'false',
+                    ],
+                ],
+            ])),
+            Stat::make('Assets Available', ITAsset::where('asset_user_id', null)->count())
+            ->url(ITAssetResource::getUrl('index', [
+                'tableFilters' => [
+                    'asset_user_id' => [
+                        'available' => 'false',
+                        'in_use' => 'true',
+                    ],
+                ],
+            ])),
         ];
     }
 }
