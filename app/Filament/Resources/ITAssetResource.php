@@ -15,6 +15,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -162,27 +163,29 @@ class ITAssetResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('Detail')
-                    ->label('Detail')
-                    ->color('warning')
-                    ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
-                    ->openUrlInNewTab(),
-                Tables\Actions\ViewAction::make()
-                    ->icon(null),
-                Tables\Actions\EditAction::make()
-                    ->icon(null),
-                Tables\Actions\DeleteAction::make()
-                    ->icon(null)    
-                    ->modalHeading('Are you sure you want to delete this asset?')
-                    ->modalDescription('This action cannot be undone.')
-                    ->successNotificationTitle('Asset deleted successfully.')
-                    ->requiresConfirmation()
-                    ->after(function ($record) {
-                        // After deleting, delete the asset's usage history
-                        if ($record->asset) {
-                            $record->asset->usageHistory()->delete();
-                        }
-                    }),
+                ActionGroup::make([
+                    Tables\Actions\Action::make('Detail')
+                        ->label('Detail')
+                        ->color('warning')
+                        ->icon('heroicon-o-information-circle')
+                        ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()    
+                        ->modalHeading('Are you sure you want to delete this asset?')
+                        ->modalDescription('This action cannot be undone.')
+                        ->successNotificationTitle('Asset deleted successfully.')
+                        ->requiresConfirmation()
+                        ->after(function ($record) {
+                            // After deleting, delete the asset's usage history
+                            if ($record->asset) {
+                                $record->asset->usageHistory()->delete();
+                            }
+                        }),
+                ])
+                ->icon('heroicon-m-ellipsis-horizontal')
+                ->tooltip('Actions')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
