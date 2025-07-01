@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('maintenance_date');
             $table->foreignId('asset_id')->constrained('it_assets')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('employee_id')->nullable()->constrained('employees')->onDelete('set null')->onUpdate('cascade');
+            $table->foreignId('division_id')->nullable()->constrained('employee_divisions')->onDelete('set null')->onUpdate('cascade');
             $table->string('maintenance_condition', 5000);
             $table->string('maintenance_repair', 5000);
             $table->time('maintenance_start_time');

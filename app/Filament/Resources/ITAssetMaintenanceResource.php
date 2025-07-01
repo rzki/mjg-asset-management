@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\ITAsset;
 use App\Models\Employee;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -51,6 +52,21 @@ class ITAssetMaintenanceResource extends Resource
                         Select::make('asset_id')
                             ->label('Asset Code')
                             ->relationship('asset', 'asset_code')
+                            ->getOptionLabelFromRecordUsing(function ($record) {
+                                $userInitial = $record->employee?->initial ?? 'N/A';
+                                return "{$record->asset_code} - {$userInitial} - {$record->asset_name}";
+                            })
+                            ->afterStateUpdated(function ($set, $state) {
+                                $asset = ITAsset::find($state);
+                                if ($asset && $asset->asset_user_id) {
+                                    $set('employee_id', $asset->asset_user_id);
+                                    $set('initial', $asset->employee->initial ?? '');
+                                } else {
+                                    $set('employee_id', null);
+                                    $set('initial', '');
+                                }
+                            })
+                            ->reactive()
                             ->preload()
                             ->required()
                             ->searchable(),
@@ -62,10 +78,15 @@ class ITAssetMaintenanceResource extends Resource
                                     ->relationship('employee', 'name')
                                     ->preload()
                                     ->reactive()
-                                    ->required()
                                     ->searchable()
-                                    ->afterStateUpdated(function ($set, $get) {
-                                        $employee = Employee::find($get('employee_id'));
+                                    ->afterStateUpdated(function ($set, $get, $state) {
+                                        $employee = Employee::find($state);
+                                        if ($employee) {
+                                            $set('initial', $employee->initial);
+                                        }
+                                    })
+                                    ->afterStateHydrated(function ($set, $get, $state) {
+                                        $employee = Employee::find($state);
                                         if ($employee) {
                                             $set('initial', $employee->initial);
                                         }
@@ -75,24 +96,25 @@ class ITAssetMaintenanceResource extends Resource
                                     ->disabled()
                                     ->afterStateHydrated(function ($set, $get) {
                                         $employee = $get('employee_id') ? Employee::find($get('employee_id')) : null;
-                                        $set('initial', $employee?->initial ?? '');
+                                        $set('initial', $employee->initial ?? '');
+                                    })
+                                    ->reactive()
+                                    ->afterStateUpdated(function ($set, $get, $state) {
+                                        $employee = Employee::find($state);
+                                        $set('initial', $employee->initial ?? '');
                                     }),
                                 Select::make('division_id')
                                     ->label('Division')
                                     ->relationship('division', 'name')
                                     ->preload()
-                                    ->searchable()
-                                    ->disabled(false)
-                                    ->dehydrated(true),
+                                    ->searchable(),
                             ]),
                         Textarea::make('maintenance_condition')
                             ->label('Condition/Problem')
-                            ->required()
-                            ->columnSpanFull(),
+                            ->required(),
                         Textarea::make('maintenance_repair')
                             ->label('Maintenance/Repair')
-                            ->required()
-                            ->columnSpanFull(),
+                            ->required(),
                         TimePicker::make('maintenance_start_time')
                             ->label('Start')
                             ->required()
