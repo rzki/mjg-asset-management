@@ -21,11 +21,11 @@ class ITAssetLocationResource extends Resource
 {
     protected static ?string $model = ITAssetLocation::class;
     protected static ?string $slug = 'it-asset-locations';
-    protected static ?string $navigationGroup = 'Asset Management';
+    protected static ?string $navigationGroup = 'ITD';
     protected static ?string $navigationLabel = 'Locations';
     protected static ?string $navigationIcon = 'heroicon-o-map-pin';
-    protected static ?string $parentNavigation = 'Asset Management';
-    protected static ?string $navigationParentItem = 'IT Assets';
+    protected static ?string $parentNavigation = 'ITD';
+     
     protected static ?string $modelLabel = 'IT Asset Location';
     protected static ?string $pluralModelLabel = 'IT Asset Locations';
     protected static ?int $navigationSort = 4;

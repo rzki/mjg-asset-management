@@ -21,8 +21,8 @@ class ITAssetUsageHistoryResource extends Resource
 {
     protected static ?string $model = ITAssetUsageHistory::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Asset Management';
-    protected static ?string $navigationParentItem = 'IT Assets';
+    protected static ?string $navigationGroup = 'ITD';
+     
     protected static ?string $navigationLabel = 'Usage History';
     protected static ?string $modelLabel = 'IT Asset Usage History';
     protected static ?string $pluralModelLabel = 'IT Asset Usage Histories';

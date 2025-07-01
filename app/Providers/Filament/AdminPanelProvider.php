@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('IT Asset Management'),
+                    ->label('IT ITD'),
                 NavigationGroup::make()
                     ->label('User Management')
             ])

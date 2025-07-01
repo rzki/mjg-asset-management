@@ -22,8 +22,8 @@ class ITAssetCategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $slug = 'it-asset-categories';
     protected static ?int $navigationSort = 3;
-    protected static ?string $navigationParentItem = 'IT Assets';
-    protected static ?string $navigationGroup = 'Asset Management';
+     
+    protected static ?string $navigationGroup = 'ITD';
     protected static ?string $navigationLabel = 'Categories';
     protected static ?string $modelLabel = 'IT Asset Category';
     protected static ?string $pluralModelLabel = 'IT Asset Categories';
