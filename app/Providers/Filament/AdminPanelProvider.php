@@ -2,6 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\ITAssetResource;
+use App\Filament\Resources\ITAssetUsageHistoryResource;
+use App\Models\ITAssetUsageHistory;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -47,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('IT ITD'),
+                    ->label('ITD'),
                 NavigationGroup::make()
                     ->label('User Management')
             ])
