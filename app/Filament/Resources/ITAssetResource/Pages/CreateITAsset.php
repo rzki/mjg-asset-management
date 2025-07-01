@@ -45,7 +45,7 @@ class CreateITAsset extends CreateRecord
             ->first();
         $autoIncrement = ITAsset::where('asset_category_id', $data['asset_category_id'])->count() + 1;
         $autoIncrementPadded = str_pad($autoIncrement, 3, '0', STR_PAD_LEFT);
-        $data['asset_code'] = 'MJG-INV-ITD.11-' . $categoryCode . '-' . $autoIncrementPadded;
+        $data['asset_code'] = 'MJG-INV- Asset Management.11-' . $categoryCode . '-' . $autoIncrementPadded;
 
         return static::getModel()::create($data);
     }

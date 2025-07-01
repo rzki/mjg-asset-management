@@ -32,7 +32,7 @@ class ITAssetMaintenanceResource extends Resource
     protected static ?string $slug = 'it-asset-maintenance-log';
     protected static ?string $navigationParentItem = 'IT Assets';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'ITD';
+    protected static ?string $navigationGroup = ' Asset Management';
     public static function getBreadcrumb(): string
     {
         return 'IT Asset Maintenance Log';

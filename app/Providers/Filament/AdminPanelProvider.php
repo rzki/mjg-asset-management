@@ -50,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('ITD'),
+                    ->label(' Asset Management'),
                 NavigationGroup::make()
                     ->label('User Management')
             ])
