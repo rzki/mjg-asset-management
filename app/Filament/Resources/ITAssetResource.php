@@ -136,7 +136,7 @@ class ITAssetResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('asset_year_bought')
-                    ->label('Year Bought')
+                    ->label('Asset Year')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('asset_category_id')
@@ -212,16 +212,15 @@ class ITAssetResource extends Resource
                         ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
                         ->openUrlInNewTab(),
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\Action::make('Print')
-                        ->label('Print')
-                        ->icon('heroicon-o-printer')
-                        ->color('primary')
-                        ->action(function ($record) {
-                            // No-op, handled by JS
-                        })
-                        ->extraAttributes(fn ($record) => [
-                            'onclick' => "window.open('/print-asset-barcode/{$record->assetId}', '_blank')"
-                        ]),
+                    Tables\Actions\Action::make('export_qr_pdf')
+                        ->label('Export QR as PDF')
+                        ->icon('heroicon-o-qr-code')
+                        ->color('success')
+                        ->url(fn ($record) => route('assets.qr-code.pdf', ['assetId' => $record->assetId]))
+                        ->openUrlInNewTab()
+                        ->after(function () {
+                            // PDF generation handled in the controller for the route
+                        }),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()    
                         ->modalHeading('Are you sure you want to delete this asset?')

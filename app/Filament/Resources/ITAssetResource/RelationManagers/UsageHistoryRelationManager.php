@@ -51,7 +51,7 @@ class UsageHistoryRelationManager extends RelationManager
                             ->label('Assign To...')
                             ->relationship('employee', 'name')
                             ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' - '.$record->name)
-                            ->searchable()
+                            ->searchable(['initial', 'name'])
                             ->preload(),
                         Select::make('department_id')
                             ->label('Department')

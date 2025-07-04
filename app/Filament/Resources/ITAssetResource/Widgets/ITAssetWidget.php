@@ -14,12 +14,12 @@ class ITAssetWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('in Use', ITAsset::where('asset_user_id', '!=', null)->count())
+            Stat::make('In Use', ITAsset::where('asset_user_id', '!=', null)->count())
             ->url(ITAssetResource::getUrl('index', [
                 'tableFilters' => [
                     'asset_user_id' => [
-                        'available' => 'true',
-                        'in_use' => 'false',
+                        'available' => 'false',
+                        'in_use' => 'true',
                     ],
                 ],
             ])),
@@ -27,8 +27,8 @@ class ITAssetWidget extends BaseWidget
             ->url(ITAssetResource::getUrl('index', [
                 'tableFilters' => [
                     'asset_user_id' => [
-                        'available' => 'false',
-                        'in_use' => 'true',
+                        'available' => 'true',
+                        'in_use' => 'false',
                     ],
                 ],
             ])),
