@@ -3,9 +3,11 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use App\Models\EmployeeDivision;
 use Filament\Resources\Resource;
@@ -44,6 +46,14 @@ class EmployeeDivisionResource extends Resource
                             ->label('Initial')
                             ->required()
                             ->maxLength(3),
+                        Select::make('department_id')
+                            ->label('Department')
+                            ->relationship('department', 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->columnSpanFull(),
                     ]),
             ]);
     }
@@ -60,6 +70,11 @@ class EmployeeDivisionResource extends Resource
                     ->label('Initial')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('department.name')
+                    ->label('Department')
+                    ->searchable()
+                    ->sortable()
+                    ->getStateUsing(fn ($record) => $record->department ? "{$record->department->name}" : 'N/A')
             ])
             ->filters([
                 //
@@ -74,6 +89,26 @@ class EmployeeDivisionResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('addToDepartment')
+                        ->label('Add To Department...')
+                        ->icon('heroicon-o-plus')
+                        ->form([
+                            Select::make('department_id')
+                                ->label('Department')
+                                ->relationship('department', 'name')
+                                ->required()
+                                ->searchable()
+                                ->preload(),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            foreach ($records as $record) {
+                                $record->department_id = $data['department_id'];
+                                $record->save();
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->modalHeading('Add Selected Divisions to Department')
+                        ->successNotificationTitle('Divisions added to department successfully.'),
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading('Are you sure you want to delete these divisions?')
                         ->modalDescription('This action cannot be undone.')

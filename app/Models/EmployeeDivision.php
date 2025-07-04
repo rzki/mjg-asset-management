@@ -12,13 +12,12 @@ class EmployeeDivision extends Model
     {
         return 'divisionId';
     }
-
+    public function department()
+    {
+        return $this->belongsTo(EmployeeDepartment::class, 'department_id');
+    }
     public function employees()
     {
         return $this->hasMany(Employee::class, 'division_id');
-    }
-    public function positions()
-    {
-        return $this->hasMany(EmployeePosition::class, 'division_id');
     }
 }
