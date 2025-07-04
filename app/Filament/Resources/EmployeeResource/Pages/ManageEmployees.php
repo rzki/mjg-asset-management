@@ -16,6 +16,8 @@ class ManageEmployees extends ManageRecords
         return [
             Actions\CreateAction::make()
                 ->label('New Employee')
+                ->modalHeading('Create New Employee')
+                ->successNotificationTitle('Employee created successfully')
                 ->mutateFormDataUsing(function (array $data): array {
                     // Set the initial division to 'Head Office' if not set
                     $data['employeeId'] = Str::orderedUuid();

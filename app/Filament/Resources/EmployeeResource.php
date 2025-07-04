@@ -40,7 +40,7 @@ class EmployeeResource extends Resource
                             ->placeholder('Select User'),
                     ]),
                 Section::make('Employee Details')
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
                         TextInput::make('name')
                             ->label('Employee Name')
@@ -48,14 +48,14 @@ class EmployeeResource extends Resource
                             ->maxLength(255),
                         TextInput::make('initial')
                             ->label('Initial')
+                            ->required()
+                            ->unique(Employee::class, 'initial', ignoreRecord: true)
                             ->maxLength(3),
-                        Select::make('division_id')
-                            ->label('Division')
-                            ->relationship('division', 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' '.$record->name)
-                            ->searchable()
-                            ->preload()
-                            ->columnSpanFull(),
+                        TextInput::make('employee_number')
+                            ->label('Employee Number')
+                            ->required()
+                            ->maxLength(10)
+                            ->unique(Employee::class, 'employee_number', ignoreRecord: true),
                     ]),
             ]);
     }
@@ -72,12 +72,8 @@ class EmployeeResource extends Resource
                     ->label('Initial')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('division.name')
-                    ->label('Division')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('position.name')
-                    ->label('Position')
+                Tables\Columns\TextColumn::make('employee_number')
+                    ->label('Employee Number')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user_id')

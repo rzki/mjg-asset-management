@@ -20,4 +20,8 @@ class EmployeeDivision extends Model
     {
         return $this->hasMany(Employee::class, 'division_id');
     }
+    public function usageHistories()
+    {
+        return $this->hasMany(ITAssetUsageHistory::class, 'division_id');
+    }
 }

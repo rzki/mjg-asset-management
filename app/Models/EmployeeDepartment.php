@@ -15,4 +15,8 @@ class EmployeeDepartment extends Model
     {
         return $this->hasMany(EmployeeDivision::class, 'department_id');
     }
+    public function usageHistories()
+    {
+        return $this->hasMany(ITAssetUsageHistory::class, 'department_id');
+    }
 }
