@@ -40,7 +40,7 @@ class EmployeeDivisionResource extends Resource
                             ->label('Division Name')
                             ->required()
                             ->maxLength(255),
-                        TextInput::make('initial')
+                        TextInput::make('abbreviation')
                             ->label('Initial')
                             ->required()
                             ->maxLength(3),
@@ -56,7 +56,7 @@ class EmployeeDivisionResource extends Resource
                     ->label('Division Name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('initial')
+                TextColumn::make('abbreviation')
                     ->label('Initial')
                     ->searchable()
                     ->sortable(),
