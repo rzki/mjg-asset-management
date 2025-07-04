@@ -3,20 +3,21 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\TextEntry\TextEntrySize;
-use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\EmployeeDivision;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\EmployeeDepartment;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists\Components\TextEntry\TextEntrySize;
 use App\Filament\Resources\EmployeeDepartmentResource\Pages;
 use App\Filament\Resources\EmployeeDepartmentResource\RelationManagers;
 

@@ -48,6 +48,34 @@ class DivisionRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                Tables\Actions\Action::make('assignDivision')
+                    ->label('Assign Division')
+                    ->icon('heroicon-o-plus')
+                    ->action(function (array $data, $livewire) {
+                        $selectedDivisions = $data['divisions'] ?? [];
+                        $departmentId = $livewire->getOwnerRecord()->id;
+
+                        if (!empty($selectedDivisions)) {
+                            // Update each selected division's department_id
+                            foreach ($selectedDivisions as $divisionId) {
+                                \App\Models\EmployeeDivision::where('id', $divisionId)
+                                    ->update(['department_id' => $departmentId]);
+                            }
+                        }
+                    })
+                    ->form([
+                        Forms\Components\Select::make('divisions')
+                            ->label('Select Divisions')
+                            ->multiple()
+                            ->options(
+                                \App\Models\EmployeeDivision::query()
+                                    ->pluck('name', 'id')
+                            )
+                            ->required(),
+                    ])
+                    ->modalHeading('Assign Division')
+                    ->modalButton('Assign')
+                    ->successNotificationTitle('Division(s) assigned successfully.'),
                 Tables\Actions\CreateAction::make()
                     ->modalHeading('Create New Division')
                     ->successNotificationTitle('Division created successfully.')
