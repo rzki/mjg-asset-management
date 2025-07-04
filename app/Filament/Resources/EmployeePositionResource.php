@@ -37,14 +37,8 @@ class EmployeePositionResource extends Resource
                 TextInput::make('name')
                     ->label('Position Name')
                     ->required()
-                    ->maxLength(255),
-                Select::make('division_id')
-                    ->label('Division')
-                    ->relationship('division', 'name')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->placeholder('Select Division'),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -56,10 +50,6 @@ class EmployeePositionResource extends Resource
                     ->label('Position Name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('division.name')
-                    ->label('Division')
-                    ->searchable()
-                    ->sortable()
             ])
             ->filters([
                 //

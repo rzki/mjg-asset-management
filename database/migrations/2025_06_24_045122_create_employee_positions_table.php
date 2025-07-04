@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('employee_positions', function (Blueprint $table) {
             $table->id();
             $table->uuid('positionId')->unique();
-            $table->foreignId('division_id')->constrained('employee_divisions')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
             $table->timestamps();
         });
