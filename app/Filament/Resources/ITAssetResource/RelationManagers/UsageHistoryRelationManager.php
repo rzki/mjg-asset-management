@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources\ITAssetResource\RelationManagers;
 
-use App\Filament\Resources\ITAssetUsageHistoryResource;
 use Filament\Forms;
-use Filament\Forms\Components\Hidden;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ITAssetUsageHistoryResource;
 use Filament\Resources\RelationManagers\RelationManager;
-use Illuminate\Support\Str;
 
 class UsageHistoryRelationManager extends RelationManager
 {
@@ -36,20 +37,33 @@ class UsageHistoryRelationManager extends RelationManager
                     ->searchable()
                     ->preload()
                     ->required(),
-                Select::make('employee_id')
-                    ->label('Assign To...')
-                    ->relationship('employee', 'name')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' - '.$record->name)
-                    ->searchable()
-                    ->preload(),
-                    // ->required(),
                 Select::make('asset_location_id')
                     ->label('Location')
                     ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
                     ->searchable()
+                    ->default(fn () => \App\Models\ITAssetLocation::where('name', 'Head Office')->value('id'))
                     ->preload()
-                    ->required()
-                    ->columnSpanFull(),
+                    ->required(),
+                Section::make('Employee Assignment')
+                    ->columns(3)
+                    ->schema([
+                        Select::make('employee_id')
+                            ->label('Assign To...')
+                            ->relationship('employee', 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' - '.$record->name)
+                            ->searchable()
+                            ->preload(),
+                        Select::make('department_id')
+                            ->label('Department')
+                            ->relationship('department', 'name')
+                            ->searchable()
+                            ->preload(),
+                        Select::make('division_id')
+                            ->label('Division')
+                            ->relationship('division', 'name')
+                            ->searchable()
+                            ->preload(),
+                    ]),
                 DatePicker::make('usage_start_date')
                     ->label('Start Date')
                     ->default(now())
@@ -70,6 +84,10 @@ class UsageHistoryRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('employee.name')
                     ->label('Assigned To'),
+                TextColumn::make('department.name')
+                    ->label('Department'),
+                TextColumn::make('division.name')
+                    ->label('Division'),
                 TextColumn::make('location.name')
                     ->label('Location'),
                 TextColumn::make('usage_start_date')

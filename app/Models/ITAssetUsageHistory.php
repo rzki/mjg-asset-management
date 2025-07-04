@@ -21,9 +21,16 @@ class ITAssetUsageHistory extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id');
+    }
+    public function department()
+    {
+        return $this->belongsTo(EmployeeDepartment::class, 'department_id');
+    }
+    public function division()
+    {
+        return $this->belongsTo(EmployeeDivision::class, 'division_id');
     }
 }

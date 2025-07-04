@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('position_id')->nullable()->constrained('employee_positions')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
             $table->string('initial', 3)->unique();
-            $table->enum('status', ['active', 'terminated'])->nullable();
+            $table->string('employee_number', 10)->unique();
             $table->timestamps();
         });
     }

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('asset_id')->constrained('it_assets')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('asset_location_id')->nullable()->constrained('it_asset_locations')->onDelete('set null')->onUpdate('cascade');
             $table->foreignId('employee_id')->nullable()->constrained('employees')->onDelete('set null')->onUpdate('cascade');
+            $table->foreignId('department_id')->nullable()->constrained('employee_departments')->onDelete('set null')->onUpdate('cascade');
+            $table->foreignId('division_id')->nullable()->constrained('employee_divisions')->onDelete('set null')->onUpdate('cascade');
             $table->date('usage_start_date');
             $table->date('usage_end_date')->nullable();
             $table->timestamps();
