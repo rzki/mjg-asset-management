@@ -17,9 +17,6 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->timestamps();
         });
-        Schema::table('employee_divisions', function (Blueprint $table) {
-            $table->foreignId('department_id')->after('divisionId')->nullable()->constrained('employee_departments')->onDelete('set null')->onUpdate('cascade');
-        });
     }
 
     /**
