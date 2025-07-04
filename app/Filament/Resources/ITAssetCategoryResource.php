@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -41,6 +42,12 @@ class ITAssetCategoryResource extends Resource
                     ->label('Name')
                     ->required()
                     ->maxLength(255),
+                Textarea::make('remarks')
+                    ->label('Remarks')
+                    ->nullable()
+                    ->maxLength(500)
+                    ->autosize()
+                    ->columnSpanFull(),
             ]);
     }
 
