@@ -6,14 +6,15 @@ use Filament\Tables;
 use App\Models\ITAsset;
 use App\Models\Employee;
 use Filament\Forms\Form;
-use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
+use App\Models\ITAssetCategory;
 use App\Models\ITAssetLocation;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Filters\Indicator;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
@@ -46,11 +47,13 @@ class ITAssetResource extends Resource
                     ->label('Asset Name')
                     ->required()
                     ->columnSpanFull()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_name', strtoupper($state))),
                 TextInput::make('asset_serial_number')
                     ->label('Serial Number')
                     ->required()
-                    ->maxLength(100),
+                    ->maxLength(100)
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_serial_number', strtoupper($state))),                
                 DatePicker::make('asset_year_bought')
                     ->label('Asset Year')
                     ->native(false)
@@ -61,22 +64,31 @@ class ITAssetResource extends Resource
                     ->required(),
                 TextInput::make('asset_brand')
                     ->label('Brand')
-                    ->required(),
+                    ->required()
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_brand', strtoupper($state))),
                 TextInput::make('asset_model')
                     ->label('Model')
                     ->required()
-                    ->maxLength(100),
+                    ->maxLength(100)
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_model', strtoupper($state))),
                 Select::make('asset_category_id')
                     ->label('Category')
                     ->relationship('category', 'name')
                     ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->code} - {$record->name}")
                     ->preload()
+                    ->reactive() // This makes the field reactive
                     ->searchable()
-                    ->required(),
+                    ->required()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        // Fetch the remarks from the selected category
+                        $category = ITAssetCategory::find($state);
+                        $set('asset_remark', $category?->remarks ?? '');
+                    }),
                 Select::make('asset_condition')
                     ->label('Condition')
                     ->options([
                         'New' => 'New',
+                        'First Hand' => 'First Hand',
                         'Used' => 'Used',
                         'Defect' => 'Defect',
                         'Disposed' => 'Disposed',
@@ -104,7 +116,7 @@ class ITAssetResource extends Resource
                     ->label('Remark')
                     ->maxLength(500)
                     ->autosize()
-                    ->default("CPU : \nRAM : \nStorage : ")
+                    ->reactive()
                     ->columnSpanFull(),
             ]);
     }
@@ -200,6 +212,16 @@ class ITAssetResource extends Resource
                         ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
                         ->openUrlInNewTab(),
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\Action::make('Print')
+                        ->label('Print')
+                        ->icon('heroicon-o-printer')
+                        ->color('primary')
+                        ->action(function ($record) {
+                            // No-op, handled by JS
+                        })
+                        ->extraAttributes(fn ($record) => [
+                            'onclick' => "window.open('/print-asset-barcode/{$record->assetId}', '_blank')"
+                        ]),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()    
                         ->modalHeading('Are you sure you want to delete this asset?')
@@ -259,10 +281,16 @@ class ITAssetResource extends Resource
                             ->label('Condition'),
                         TextEntry::make('location.name')
                             ->label('Location')
-                            ->getStateUsing(fn ($record) => $record->location ? $record->location->name : 'N/A'),
+                            ->getStateUsing(function ($record) {
+                                $latestUsage = $record->usageHistory()->latest('created_at')->first();
+                                return $latestUsage && $latestUsage->location ? $latestUsage->location->name : ($record->location ? $record->location->name : 'N/A');
+                            }),
                         TextEntry::make('employee.name')
                             ->label('Asset User')
-                            ->getStateUsing(fn ($record) => $record->employee ? $record->employee->name : 'N/A'),
+                            ->getStateUsing(function ($record) {
+                                $latestUsage = $record->usageHistory()->latest('created_at')->first();
+                                return $latestUsage && $latestUsage->employee ? $latestUsage->employee->name : ($record->employee ? $record->employee->name : 'N/A');
+                            }),
                         TextEntry::make('asset_notes')
                             ->label('Notes')
                             ->limit(100),
