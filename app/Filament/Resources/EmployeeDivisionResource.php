@@ -80,6 +80,25 @@ class EmployeeDivisionResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('addDepartment')
+                    ->label('Department')
+                    ->icon('heroicon-o-plus')
+                    ->color('dark')
+                    ->form([
+                        Select::make('department_id')
+                            ->label('Department')
+                            ->relationship('department', 'name')
+                            ->searchable()
+                            ->preload(),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $record->department_id = $data['department_id'] ?? null;
+                        $record->save();
+                    })
+                    ->modalHeading('Add Division to Department')
+                    ->modalButton('Add to Department')
+                    ->modalSubmitAction(fn ($action) => $action->color('primary'))
+                    ->successNotificationTitle('Division added to Department successfully'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Are you sure you want to delete this division?')
@@ -96,13 +115,12 @@ class EmployeeDivisionResource extends Resource
                             Select::make('department_id')
                                 ->label('Department')
                                 ->relationship('department', 'name')
-                                ->required()
                                 ->searchable()
                                 ->preload(),
                         ])
                         ->action(function (Collection $records, array $data) {
                             foreach ($records as $record) {
-                                $record->department_id = $data['department_id'];
+                                $record->department_id = $data['department_id'] ?? null;
                                 $record->save();
                             }
                         })
