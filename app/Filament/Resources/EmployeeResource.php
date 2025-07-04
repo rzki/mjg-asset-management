@@ -68,10 +68,6 @@ class EmployeeResource extends Resource
                     ->label('Employee Name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('employee_number')
-                    ->label('Employee Number')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('initial')
                     ->label('Initial')
                     ->searchable()
