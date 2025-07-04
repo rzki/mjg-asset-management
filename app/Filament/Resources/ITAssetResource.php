@@ -103,6 +103,8 @@ class ITAssetResource extends Resource
                 Textarea::make('asset_remark')
                     ->label('Remark')
                     ->maxLength(500)
+                    ->autosize()
+                    ->default("CPU : \nRAM : \nStorage : ")
                     ->columnSpanFull(),
             ]);
     }
