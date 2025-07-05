@@ -5,31 +5,34 @@
     <style>
         body { font-family: sans-serif; }
         .row { display: flex; }
-        .cell { width: 15%; padding: 10px; box-sizing: border-box; text-align: center; }
+        .cell { width: 25%; padding: 18px 10px; box-sizing: border-box; text-align: left; }
         .barcode-asset {
             display: flex;
             align-items: center;
-            /* justify-content: center; */
-            gap: 15px;
-            margin-bottom: 10px;
+            gap: 16px;
         }
         .barcode-asset img {
             width: 70px;
             height: auto;
             display: block;
+            flex-shrink: 0;
         }
         .barcode-asset span {
             font-size: 15px;
             font-weight: bold;
             white-space: nowrap;
             letter-spacing: 1px;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
     <h2>Assets List</h2>
     @php
-        $chunks = $assets->chunk(5);
+$chunks = $assets->chunk(4);
     @endphp
     @foreach($chunks as $chunk)
         <div class="row">
@@ -37,12 +40,12 @@
                 <div class="cell">
                     <div class="barcode-asset">
                         {{-- <img src="{{ storage_path('app/public/'.$asset->barcode) }}" alt="barcode"> --}}
-                        <img src="{{ asset('storage/'.$asset->barcode) }}" alt="barcode">
+                        <img src="{{ asset('storage/' . $asset->barcode) }}" alt="barcode">
                         <span>{{ $asset->asset_code }}</span>
                     </div>
                 </div>
             @endforeach
-            @for($i = $chunk->count(); $i < 5; $i++)
+            @for($i = $chunk->count(); $i < 4; $i++)
                 <div class="cell"></div>
             @endfor
         </div>
