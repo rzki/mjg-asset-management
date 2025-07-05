@@ -5,14 +5,14 @@
     <style>
         body { font-family: sans-serif; }
         .row { display: flex; }
-        .cell { width: 25%; padding: 18px 10px; box-sizing: border-box; text-align: left; }
+        .cell { width: 40%; padding: 5px 5px; box-sizing: border-box; text-align: left; border: solid black 1px; margin: 5px }
         .barcode-asset {
             display: flex;
             align-items: center;
             gap: 16px;
         }
         .barcode-asset img {
-            width: 70px;
+            width: 60px;
             height: auto;
             display: block;
             flex-shrink: 0;
@@ -23,8 +23,8 @@
             white-space: nowrap;
             letter-spacing: 1px;
             max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            /* overflow: hidden;
+            text-overflow: ellipsis; */
             display: inline-block;
         }
     </style>
@@ -32,7 +32,7 @@
 <body>
     <h2>Assets List</h2>
     @php
-$chunks = $assets->chunk(4);
+$chunks = $assets->chunk(2);
     @endphp
     @foreach($chunks as $chunk)
         <div class="row">
@@ -45,7 +45,7 @@ $chunks = $assets->chunk(4);
                     </div>
                 </div>
             @endforeach
-            @for($i = $chunk->count(); $i < 4; $i++)
+            @for($i = $chunk->count(); $i < 2; $i++)
                 <div class="cell"></div>
             @endfor
         </div>
