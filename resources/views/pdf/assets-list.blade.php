@@ -23,6 +23,9 @@
     </style>
 </head>
 <body class="bg-white">
+    <div class="text-center">
+        <h5>Assets List</h5>
+    </div>
     @php
         $chunks = $assets->chunk(3);
     @endphp
