@@ -247,11 +247,10 @@ class ITAssetResource extends Resource
                         ->label('Export to PDF')
                         ->icon('heroicon-o-document-arrow-down')
                         ->action(function ($records) {
-                            $ids = $records->pluck('id')->toArray() ?? [];
+                            $ids = $records->pluck('id')->toArray();
                             session(['export_asset_ids' => $ids]);
-                            return route('assets.bulk-export-pdf.preview');
+                            return redirect()->route('assets.bulk-export-pdf.preview');
                         })
-                        ->openUrlInNewTab()
                         ->deselectRecordsAfterCompletion(),
                     ]),
             ]);
