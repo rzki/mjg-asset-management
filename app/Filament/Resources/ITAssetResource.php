@@ -246,11 +246,11 @@ class ITAssetResource extends Resource
                     Tables\Actions\BulkAction::make('export_pdf')
                         ->label('Export to PDF')
                         ->icon('heroicon-o-document-arrow-down')
-                        ->action(function ($records) {
-                            $ids = $records->pluck('id')->toArray();
-                            session(['export_asset_ids' => $ids]);
-                            return redirect()->route('assets.bulk-export-pdf.preview');
+                        ->url(function ($records) {
+                            $ids = $records ? $records->pluck('id')->toArray() : [];
+                            return route('assets.bulk-export-pdf.export', ['ids' => $ids]);
                         })
+                        ->openUrlInNewTab()
                         ->deselectRecordsAfterCompletion(),
                     ]),
             ]);
