@@ -212,15 +212,7 @@ class ITAssetResource extends Resource
                         ->url(fn ($record) => route('assets.show', ['assetId' => $record->assetId]))
                         ->openUrlInNewTab(),
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\Action::make('export_qr_pdf')
-                        ->label('Export QR as PDF')
-                        ->icon('heroicon-o-qr-code')
-                        ->color('success')
-                        ->url(fn ($record) => route('assets.qr-code.pdf', ['assetId' => $record->assetId]))
-                        ->openUrlInNewTab()
-                        ->after(function () {
-                            // PDF generation handled in the controller for the route
-                        }),
+
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()    
                         ->modalHeading('Are you sure you want to delete this asset?')
@@ -251,7 +243,16 @@ class ITAssetResource extends Resource
                                 }
                             }
                         }),
-                ]),
+                    Tables\Actions\BulkAction::make('export_pdf')
+                        ->label('Export to PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function ($records) {
+                            $ids = $records->pluck('id')->toArray();
+                            session(['export_asset_ids' => $ids]);
+                            return redirect()->route('assets.bulk-export-pdf.preview');
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    ]),
             ]);
     }
 
