@@ -19,40 +19,35 @@ class EmployeeSeeder extends Seeder
             'user_id' => 2,
             'name' => 'Muh Ardyansyah',
             'initial' => 'ARD',
-            'division_id' => 1,
-            'position_id' => 1,
+            'employee_number' => '0305'
         ]);
         Employee::create([
             'employeeId' => Str::orderedUuid(),
             'name' => 'Febry Ulfa Rizaldo',
             'user_id' => 3,
             'initial' => 'FUR',
-            'division_id' => 1,
-            'position_id' => 2,
+            'employee_number' => '0610'
         ]);
         Employee::create([
             'employeeId' => Str::orderedUuid(),
             'name' => 'Rizky Dhani Ismail',
             'user_id' => 4,
             'initial' => 'RDI',
-            'division_id' => 1,
-            'position_id' => 3,
+            'employee_number' => '0814'
         ]);
         Employee::create([
             'employeeId' => Str::orderedUuid(),
             'name' => 'Yoga Saputra',
             'user_id' => 5,
             'initial' => 'YOG',
-            'division_id' => 1,
-            'position_id' => 4,
+            'employee_number' => '0869'
         ]);
         Employee::create([
             'employeeId' => Str::orderedUuid(),
             'name' => 'Pantas Hutapea',
             'user_id' => 6,
             'initial' => 'PGH',
-            'division_id' => 1,
-            'position_id' => 4,
+            'employee_number' => '0868'
         ]);
     }
 }

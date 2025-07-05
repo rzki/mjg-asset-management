@@ -16,22 +16,18 @@ class PositionSeeder extends Seeder
     {
         EmployeePosition::create([
             'positionId' => Str::orderedUuid(),
-            'division_id' => 1,
             'name' => 'IT Manager',
         ]);
         EmployeePosition::create([
             'positionId' => Str::orderedUuid(),
-            'division_id' => 1,
             'name' => 'IT Supervisor',
         ]);
         EmployeePosition::create([
             'positionId' => Str::orderedUuid(),
-            'division_id' => 1,
             'name' => 'IT System',
         ]);
         EmployeePosition::create([
             'positionId' => Str::orderedUuid(),
-            'division_id' => 1,
             'name' => 'IT Support',
         ]);
     }
