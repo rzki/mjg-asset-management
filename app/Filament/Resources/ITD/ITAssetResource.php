@@ -250,11 +250,7 @@ class ITAssetResource extends Resource
                             $ids = $records->pluck('id')->toArray();
                             session(['export_asset_ids' => $ids]);
                         })
-                        ->url(function ($records, $data) {
-                            $ids = $records ? $records->pluck('id')->toArray() : [];
-                            // You can access data from the action() method via $data
-                            return route('assets.bulk-export-pdf.export');
-                        })
+                        ->url(route('assets.bulk-export-pdf.export'))
                         ->openUrlInNewTab()
                         ->deselectRecordsAfterCompletion(),
                     ]),
