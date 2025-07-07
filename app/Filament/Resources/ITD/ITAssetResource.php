@@ -34,7 +34,7 @@ class ITAssetResource extends Resource
     protected static ?string $navigationLabel = 'IT Assets';
     protected static ?string $slug = 'it-assets';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = ' Asset Management';
+    protected static ?string $navigationGroup = ' ITD';
     public static function getBreadcrumb(): string
     {
         return 'IT Assets';

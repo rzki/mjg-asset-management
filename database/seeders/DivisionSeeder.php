@@ -16,7 +16,7 @@ class DivisionSeeder extends Seeder
     {
         EmployeeDivision::create([
             'divisionId' => Str::orderedUuid(),
-            'abbreviation' => ' Asset Management',
+            'abbreviation' => 'ITD',
             'name' => 'Information & Technology',
         ]);
     }
