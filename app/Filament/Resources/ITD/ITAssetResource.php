@@ -249,9 +249,8 @@ class ITAssetResource extends Resource
                         ->action(function ($records) {
                             $ids = $records->pluck('id')->toArray();
                             session(['export_asset_ids' => $ids]);
+                            return redirect()->route('assets.bulk-export-pdf.export');
                         })
-                        ->url(route('assets.bulk-export-pdf.export'))
-                        ->openUrlInNewTab()
                         ->deselectRecordsAfterCompletion(),
                     ]),
             ]);

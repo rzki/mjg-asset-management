@@ -43,7 +43,7 @@
                     </div>
                 @endforeach
                 @for($i = $chunk->count(); $i < 3; $i++)
-                    <div class="col-6"></div>
+                    <div class="col-4"></div>
                 @endfor
             </div>
         @endforeach
