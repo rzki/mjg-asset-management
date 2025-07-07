@@ -43,22 +43,14 @@ class ResourcePermissionResource extends Resource
                         // Filter out used resource_names
                         return $allResources->except($usedResourceNames);
                     })
-                    ->required(),
-                Select::make('role_name')
-                    ->label('Role')
-                    ->multiple()
-                    ->options(fn () => Role::all()->pluck('name', 'name'))
                     ->searchable()
+                    ->required(),
+                Select::make('roles')
+                    ->label('Roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
                     ->preload()
-                    ->required()
-                    ->default(fn ($record) => $record && $record->role_name ? explode(',', $record->role_name) : [])
-                    ->afterStateHydrated(function ($component, $state) {
-                        // Ensure the select is hydrated with an array of role names
-                        if (is_string($state)) {
-                            $component->state(explode(',', $state));
-                        }
-                    })
-                    ->dehydrateStateUsing(fn ($state) => is_array($state) ? implode(',', $state) : $state)
+                    ->required(),
             ]);
     }
 
@@ -66,8 +58,8 @@ class ResourcePermissionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('role_name')->label('Role')->sortable()->searchable(),
                 TextColumn::make('resource_name')->label('Model')->sortable()->searchable(),
+                TextColumn::make('roles.name')->label('Roles')->sortable()->searchable(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
