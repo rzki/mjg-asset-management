@@ -1,7 +1,7 @@
 <div>
     <div class="mb-4">
         @auth
-            <a href="{{ route('filament.admin.resources.it-assets.index') }}" class="btn btn-primary mb-2">
+            <a href="{{ route('filament.admin.resources.it-assets.view', $asset->assetId) }}" class="btn btn-primary mb-2">
                 <i class="fa-solid fa-arrow-left"></i> {{ __('Back') }}
             </a>
         @endauth
