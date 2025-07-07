@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ITD;
 
+use App\Traits\HasResourceRolePermissions;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -9,6 +10,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use App\Models\ITAssetLocation;
 use Filament\Resources\Resource;
+use App\Models\ResourcePermission;
 use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -19,6 +21,7 @@ use App\Filament\Resources\ITD\ITAssetLocationResource\RelationManagers;
 
 class ITAssetLocationResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = ITAssetLocation::class;
     protected static ?string $slug = 'it-asset-locations';
     protected static ?string $navigationGroup = ' ITD';
@@ -79,4 +82,5 @@ class ITAssetLocationResource extends Resource
             'index' => Pages\ManageITAssetLocations::route('/'),
         ];
     }
+
 }

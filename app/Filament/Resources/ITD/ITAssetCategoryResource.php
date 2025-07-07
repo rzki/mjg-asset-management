@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\ITD;
 
+use App\Traits\HasResourceRolePermissions;
 use Filament\Forms;
-use Filament\Forms\Components\Textarea;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\ITAssetCategory;
 use Filament\Resources\Resource;
+use App\Models\ResourcePermission;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +20,7 @@ use App\Filament\Resources\ITD\ITAssetCategoryResource\RelationManagers;
 
 class ITAssetCategoryResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = ITAssetCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -93,4 +96,5 @@ class ITAssetCategoryResource extends Resource
             'index' => Pages\ManageITAssetCategories::route('/'),
         ];
     }
+
 }

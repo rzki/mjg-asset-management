@@ -11,6 +11,7 @@ use App\Models\ITAssetCategory;
 use App\Models\ITAssetLocation;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use App\Models\ResourcePermission;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
@@ -27,9 +28,12 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\ITD\ITAssetResource\Pages;
 use App\Filament\Resources\ITD\ITAssetResource\RelationManagers\UsageHistoryRelationManager;
+use App\Traits\HasResourceRolePermissions;
 
 class ITAssetResource extends Resource
 {
+    use HasResourceRolePermissions;
+
     protected static ?string $model = ITAsset::class;
     protected static ?string $navigationLabel = 'IT Assets';
     protected static ?string $slug = 'it-assets';

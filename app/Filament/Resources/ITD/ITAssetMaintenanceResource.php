@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ITD;
 
+use App\Traits\HasResourceRolePermissions;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
@@ -11,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Models\ITAssetMaintenance;
+use App\Models\ResourcePermission;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
@@ -25,6 +27,7 @@ use App\Filament\Resources\ITD\ITAssetMaintenanceResource\RelationManagers;
 
 class ITAssetMaintenanceResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = ITAssetMaintenance::class;
     protected static ?string $navigationLabel = 'Maintenance Log';
     protected static ?string $modelLabel = 'IT Asset Maintenance Log';
@@ -194,4 +197,5 @@ class ITAssetMaintenanceResource extends Resource
             'edit' => Pages\EditITAssetMaintenance::route('/{record}/edit'),
         ];
     }
+
 }

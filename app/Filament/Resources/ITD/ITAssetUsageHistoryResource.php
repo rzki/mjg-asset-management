@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ITD;
 
+use App\Traits\HasResourceRolePermissions;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -19,6 +20,7 @@ use App\Filament\Resources\ITD\ITAssetUsageHistoryResource\RelationManagers;
 
 class ITAssetUsageHistoryResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = ITAssetUsageHistory::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = ' ITD';

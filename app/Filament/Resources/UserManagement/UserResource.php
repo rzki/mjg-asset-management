@@ -22,7 +22,7 @@ class UserResource extends Resource
     protected static ?string $navigationGroup = 'User Management';
     public static function canViewAny(): bool
     {
-        return auth()->user()->hasRole(['Super Admin', 'Admin']);
+        return auth()->user()->hasRole(['Super Admin', 'ITD']);
     }
     public static function form(Form $form): Form
     {
