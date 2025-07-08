@@ -19,7 +19,7 @@ Route::get('/assets/bulk-export-pdf/export', function () {
     ->margins(10, 10, 10, 10)
     ->showBackground()
     ->pdf();
-    // return $assets;
+    // return $html;
     return response($pdf, 200)
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
