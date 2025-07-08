@@ -60,6 +60,9 @@ class EmployeeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->orderByDesc('employee_number');
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Employee Name')
