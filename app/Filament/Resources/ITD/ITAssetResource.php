@@ -102,20 +102,6 @@ class ITAssetResource extends Resource
                     ->label('History/Notes')
                     ->maxLength(500)
                     ->columnSpanFull(),
-                // Select::make('asset_location_id')
-                //     ->label('Location')
-                //     ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
-                //     ->default(function () {
-                //         $headOffice = ITAssetLocation::where('name', 'Head Office')->first();
-                //         return $headOffice ? $headOffice->id : null;
-                //     })
-                //     ->required(),
-                // Select::make('asset_user_id')
-                //     ->label('Asset User')
-                //     ->options(function () {
-                //         return Employee::all()->pluck('name', 'id');
-                //     })
-                //     ->searchable(),
                 Textarea::make('asset_remark')
                     ->label('Remark')
                     ->maxLength(500)
@@ -178,6 +164,7 @@ class ITAssetResource extends Resource
                     ->label('Condition')
                     ->options([
                         'New' => 'New',
+                        'First Hand' => 'First Hand',
                         'Used' => 'Used',
                         'Defect' => 'Defect',
                         'Disposed' => 'Disposed',
