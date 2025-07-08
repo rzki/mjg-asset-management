@@ -14,8 +14,8 @@
             align-items: center;
         }
         .qr-code img {
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: auto;
             object-fit: contain;
             display: block;
             padding: 3px;
@@ -51,7 +51,7 @@
         .asset-code h6 {
             margin: 0;
             padding: 0;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
         }
     </style>
