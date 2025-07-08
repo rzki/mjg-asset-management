@@ -42,6 +42,16 @@ class UsageHistoryRelationManager extends RelationManager
                     ->relationship('location', 'name', fn ($query) => $query->orderBy('created_at', 'asc'))
                     ->searchable()
                     ->default(fn () => \App\Models\ITAssetLocation::where('name', 'Head Office')->value('id'))
+                    ->createOptionModalHeading('Add New Location')
+                    ->createOptionForm([
+                        Hidden::make('locationId')
+                            ->default(fn () => (string) Str::orderedUuid()),
+                        Forms\Components\TextInput::make('name')
+                            ->label('Location Name')
+                            ->required()
+                            ->maxLength(255)
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('name', ucwords($state)))
+                    ])
                     ->preload()
                     ->required(),
                 Section::make('Employee Assignment')
@@ -52,16 +62,53 @@ class UsageHistoryRelationManager extends RelationManager
                             ->relationship('employee', 'name')
                             ->getOptionLabelFromRecordUsing(fn ($record) => $record->initial.' - '.$record->name)
                             ->searchable(['initial', 'name'])
+                            ->createOptionModalHeading('Add New Employee')
+                            ->createOptionForm([
+                                Hidden::make('employeeId')
+                                    ->default(fn () => (string) Str::orderedUuid()),
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Employee Name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('initial')
+                                    ->label('Initial')
+                                    ->required()
+                                    ->maxLength(3)
+                                    ->unique(\App\Models\Employee::class, 'initial', ignoreRecord: true),
+                                Forms\Components\TextInput::make('employee_number')
+                                    ->label('Employee Number')
+                                    ->required()
+                                    ->maxLength(10)
+                                    ->unique(\App\Models\Employee::class, 'employee_number', ignoreRecord: true),
+                            ])
                             ->preload(),
                         Select::make('department_id')
                             ->label('Department')
                             ->relationship('department', 'name')
                             ->searchable()
+                            ->createOptionModalHeading('Add New Department')
+                            ->createOptionForm([
+                                Hidden::make('departmentId')
+                                    ->default(fn () => (string) Str::orderedUuid()),
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Department Name')
+                                    ->required()
+                                    ->maxLength(255)
+                            ])
                             ->preload(),
                         Select::make('division_id')
                             ->label('Division')
                             ->relationship('division', 'name')
                             ->searchable()
+                            ->createOptionModalHeading('Add New Division')
+                            ->createOptionForm([
+                                Hidden::make('divisionId')
+                                    ->default(fn () => (string) Str::orderedUuid()),
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Division Name')
+                                    ->required()
+                                    ->maxLength(255)
+                            ])
                             ->preload(),
                     ]),
                 DatePicker::make('usage_start_date')
