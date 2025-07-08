@@ -14,6 +14,6 @@ trait HasResourceRolePermissions
 
     public static function canViewAny(): bool
     {
-        return auth()->user()?->hasAnyRole(self::getPermittedRoles()) ?? auth()->user()?->hasRole('Super Admin');
+        return auth()->user()?->hasAnyRole(['Super Admin'], self::getPermittedRoles());
     }
 }

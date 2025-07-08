@@ -27,11 +27,6 @@ class EmployeePositionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $navigationParentItem = 'Employees';
     protected static ?string $navigationGroup = 'User Management';
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()->hasRole(['Super Admin', 'Admin']);
-    }
     public static function form(Form $form): Form
     {
         return $form

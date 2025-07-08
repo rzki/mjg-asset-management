@@ -29,10 +29,6 @@ class EmployeeDivisionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationParentItem = 'Employees';
     protected static ?string $navigationGroup = 'User Management';
-    public static function canViewAny(): bool
-    {
-        return auth()->user()->hasRole(['Super Admin', 'Admin']);
-    }
 
     public static function form(Form $form): Form
     {
