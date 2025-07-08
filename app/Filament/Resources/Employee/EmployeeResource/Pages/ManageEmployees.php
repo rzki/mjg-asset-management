@@ -23,6 +23,34 @@ class ManageEmployees extends ManageRecords
                     $data['employeeId'] = Str::orderedUuid();
                     return $data;
                 }),
+            Actions\Action::make('importExcel')
+                ->label('Import Excel')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->form([
+                    \Filament\Forms\Components\FileUpload::make('file')
+                        ->label('Excel File')
+                        ->disk('local')
+                        // ->acceptedFileTypes(['.xlsx', '.xls'])
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    try {
+                        $filePath = \Storage::path($data['file']);
+                        \Maatwebsite\Excel\Facades\Excel::import(
+                            new \App\Imports\EmployeesImport,
+                            $filePath
+                        );
+                        \Filament\Notifications\Notification::make()
+                            ->title('Import successful!')
+                            ->success()
+                            ->send();
+                    } catch (\Exception $e) {
+                        \Filament\Notifications\Notification::make()
+                            ->title('Import failed: ' . $e->getMessage())
+                            ->danger()
+                            ->send();
+                    }
+                }),
         ];
     }
 }
