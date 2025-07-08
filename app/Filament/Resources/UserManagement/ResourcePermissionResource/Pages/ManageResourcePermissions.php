@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources\ResourcePermissionResource\Pages;
+namespace App\Filament\Resources\UserManagement\ResourcePermissionResource\Pages;
 
 use Filament\Actions;
 use Illuminate\Support\Str;
 use Filament\Resources\Pages\ManageRecords;
-use App\Filament\Resources\ResourcePermissionResource;
+use App\Filament\Resources\UserManagement\ResourcePermissionResource;
 
 class ManageResourcePermissions extends ManageRecords
 {

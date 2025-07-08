@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\UserManagement;
 
 use App\Traits\HasResourceRolePermissions;
 use Filament\Forms;
@@ -12,7 +12,7 @@ use App\Models\ResourcePermission;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use App\Filament\Resources\ResourcePermissionResource\Pages;
+use App\Filament\Resources\UserManagement\ResourcePermissionResource\Pages;
 use Spatie\Permission\Models\Role;
 
 class ResourcePermissionResource extends Resource
