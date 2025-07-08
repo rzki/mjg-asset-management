@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Employee;
 
+use App\Traits\HasResourceRolePermissions;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Employee;
@@ -17,6 +18,7 @@ use App\Filament\Resources\Employee\EmployeeResource\RelationManagers;
 
 class EmployeeResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = Employee::class;
     
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';

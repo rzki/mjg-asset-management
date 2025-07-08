@@ -14,12 +14,14 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Traits\HasResourceRolePermissions;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Employee\EmployeePositionResource\Pages;
 use App\Filament\Resources\Employee\EmployeePositionResource\RelationManagers;
 
 class EmployeePositionResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = EmployeePosition::class;
     protected static ?string $navigationLabel = 'Positions';
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';

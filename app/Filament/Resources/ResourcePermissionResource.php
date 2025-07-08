@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Traits\HasResourceRolePermissions;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -16,6 +17,7 @@ use Spatie\Permission\Models\Role;
 
 class ResourcePermissionResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = ResourcePermission::class;
     protected static ?string $navigationIcon = 'heroicon-o-key';
     protected static ?string $navigationGroup = 'User Management';

@@ -3,25 +3,27 @@
 namespace App\Filament\Resources\Employee;
 
 use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use App\Models\EmployeeDivision;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Traits\HasResourceRolePermissions;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Employee\EmployeeDivisionResource\Pages;
 use App\Filament\Resources\Employee\EmployeeDivisionResource\RelationManagers;
 
 class EmployeeDivisionResource extends Resource
 {
+    use HasResourceRolePermissions;
     protected static ?string $model = EmployeeDivision::class;
     protected static ?string $navigationLabel = 'Divisions';
     protected static ?string $navigationIcon = 'heroicon-o-users';
