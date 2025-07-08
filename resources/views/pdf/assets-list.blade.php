@@ -5,8 +5,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .asset-label {
-            max-width: 260px;
-            min-width: 250px;
+            max-width: 240px;
+            min-width: 240px;
             border: 4px double #000;
             margin: 8px auto;
             background: #fff;
@@ -51,21 +51,18 @@
         .asset-code h6 {
             margin: 0;
             padding: 0;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
         }
     </style>
 </head>
 <body class="bg-white">
-    <div class="text-center mb-4">
-        <h5>Assets List</h5>
-    </div>
     @php
 $chunks = $assets->chunk(3);
     @endphp
     <div class="container-fluid my-4">
         @foreach($chunks as $chunk)
-            <div class="row mb-3 justify-content-start ms-2">
+            <div class="row mb-3 justify-content-start mx-2">
                 @foreach($chunk as $asset)
                     <div class="col-4 d-flex justify-content-center">
                         <div class="asset-label">

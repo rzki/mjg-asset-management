@@ -16,7 +16,6 @@ Route::get('/assets/bulk-export-pdf/export', function () {
     $filename = 'IT-ASSETS-' . now()->format('Y-m-d') . '.pdf';
     $pdf = Browsershot::html($html)
     ->format('A4')
-    ->margins(10, 10, 10, 10)
     ->showBackground()
     ->pdf();
     // return $html;
