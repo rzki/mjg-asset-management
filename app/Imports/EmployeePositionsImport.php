@@ -13,11 +13,13 @@ class EmployeePositionsImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        $name = $row['designation'] ?? null;
-        EmployeePosition::create([
+        $name = $row['position'] ?? null;
+        if ($name && !EmployeePosition::where('name', $name)->exists()) {
+            EmployeePosition::create([
             'positionId' => Str::orderedUuid(),
             'name' => $name,
-        ]);
+            ]);
+        }
     }
     
     public function headingRow(): int
