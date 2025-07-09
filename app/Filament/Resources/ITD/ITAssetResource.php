@@ -13,6 +13,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\ResourcePermission;
 use Filament\Support\Colors\Color;
+use Filament\Forms\Components\Grid;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Filters\Indicator;
@@ -24,11 +25,11 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use App\Traits\HasResourceRolePermissions;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\ITD\ITAssetResource\Pages;
 use App\Filament\Resources\ITD\ITAssetResource\RelationManagers\UsageHistoryRelationManager;
-use App\Traits\HasResourceRolePermissions;
 
 class ITAssetResource extends Resource
 {
@@ -53,28 +54,6 @@ class ITAssetResource extends Resource
                     ->columnSpanFull()
                     ->maxLength(255)
                     ->afterStateUpdated(fn ($state, callable $set) => $set('asset_name', strtoupper($state))),
-                TextInput::make('asset_serial_number')
-                    ->label('Serial Number')
-                    ->required()
-                    ->maxLength(100)
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_serial_number', strtoupper($state))),                
-                DatePicker::make('asset_year_bought')
-                    ->label('Asset Year')
-                    ->native(false)
-                    ->displayFormat('Y')
-                    ->format('Y')
-                    ->closeOnDateSelection()
-                    ->default(now())
-                    ->required(),
-                TextInput::make('asset_brand')
-                    ->label('Brand')
-                    ->required()
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_brand', strtoupper($state))),
-                TextInput::make('asset_model')
-                    ->label('Model')
-                    ->required()
-                    ->maxLength(100)
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_model', strtoupper($state))),
                 Select::make('asset_category_id')
                     ->label('Category')
                     ->relationship('category', 'name')
@@ -87,7 +66,29 @@ class ITAssetResource extends Resource
                         // Fetch the remarks from the selected category
                         $category = ITAssetCategory::find($state);
                         $set('asset_remark', $category?->remarks ?? '');
-                    }),
+                    }),     
+                DatePicker::make('asset_year_bought')
+                    ->label('Asset Year')
+                    ->native(false)
+                    ->displayFormat('Y')
+                    ->format('Y')
+                    ->closeOnDateSelection()
+                    ->default(now())
+                    ->required(),
+                Grid::make(3)
+                    ->schema([
+                        TextInput::make('asset_brand')
+                            ->label('Brand')
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('asset_brand', strtoupper($state))),
+                        TextInput::make('asset_model')
+                            ->label('Model')
+                            ->maxLength(100)
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('asset_model', strtoupper($state))),
+                        TextInput::make('asset_serial_number')
+                            ->label('Serial Number')
+                            ->maxLength(100)
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('asset_serial_number', strtoupper($state))),  
+                    ]),
                 Select::make('asset_condition')
                     ->label('Condition')
                     ->options([
@@ -97,6 +98,7 @@ class ITAssetResource extends Resource
                         'Defect' => 'Defect',
                         'Disposed' => 'Disposed',
                     ])
+                    ->columnSpanFull()
                     ->required(),
                 Textarea::make('asset_notes')
                     ->label('History/Notes')
@@ -267,13 +269,22 @@ class ITAssetResource extends Resource
                         TextEntry::make('asset_code')
                             ->label('Asset Code'),
                         TextEntry::make('asset_serial_number')
-                            ->label('Serial Number'),
+                            ->label('Serial Number')
+                            ->getStateUsing(function ($record) {
+                                return $record->asset_serial_number ? strtoupper($record->asset_serial_number) : 'N/A';
+                            }),
                         TextEntry::make('asset_year_bought')
                             ->label('Year Bought'),
                         TextEntry::make('asset_brand')
-                            ->label('Brand'),
+                            ->label('Brand')
+                            ->getStateUsing(function ($record) {
+                                return $record->asset_brand ? strtoupper($record->asset_brand) : 'N/A';
+                            }),
                         TextEntry::make('asset_model')
-                            ->label('Model'),
+                            ->label('Model')
+                            ->getStateUsing(function ($record) {
+                                return $record->asset_model ? strtoupper($record->asset_model) : 'N/A';
+                            }),
                         TextEntry::make('category.name')
                             ->label('Category'),
                         TextEntry::make('asset_condition')
