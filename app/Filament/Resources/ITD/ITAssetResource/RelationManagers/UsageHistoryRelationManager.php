@@ -81,7 +81,8 @@ class UsageHistoryRelationManager extends RelationManager
                                     ->maxLength(10)
                                     ->unique(\App\Models\Employee::class, 'employee_number', ignoreRecord: true),
                             ])
-                            ->preload(),
+                            ->preload()
+                            ->columnSpanFull(),
                         Select::make('department_id')
                             ->label('Department')
                             ->relationship('department', 'name')
@@ -110,6 +111,20 @@ class UsageHistoryRelationManager extends RelationManager
                                     ->maxLength(255)
                             ])
                             ->preload(),
+                        Select::make('position_id')
+                            ->label('Position')
+                            ->relationship('position', 'name')
+                            ->searchable()
+                            ->createOptionModalHeading('Add New Position')
+                            ->createOptionForm([
+                                Hidden::make('positionId')
+                                    ->default(fn () => (string) Str::orderedUuid()),
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Position Name')
+                                    ->required()
+                                    ->maxLength(255)
+                            ])
+                            ->preload()
                     ]),
                 DatePicker::make('usage_start_date')
                     ->label('Start Date')
@@ -135,6 +150,8 @@ class UsageHistoryRelationManager extends RelationManager
                     ->label('Department'),
                 TextColumn::make('division.name')
                     ->label('Division'),
+                TextColumn::make('position.name')
+                    ->label('Position'),
                 TextColumn::make('location.name')
                     ->label('Location'),
                 TextColumn::make('usage_start_date')

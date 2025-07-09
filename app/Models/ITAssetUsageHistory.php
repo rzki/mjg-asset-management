@@ -33,4 +33,8 @@ class ITAssetUsageHistory extends Model
     {
         return $this->belongsTo(EmployeeDivision::class, 'division_id');
     }
+    public function position()
+    {
+        return $this->belongsTo(EmployeePosition::class, 'position_id');
+    }
 }

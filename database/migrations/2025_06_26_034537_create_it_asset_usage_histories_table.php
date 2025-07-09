@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->nullable()->constrained('employees')->onDelete('set null')->onUpdate('cascade');
             $table->foreignId('department_id')->nullable()->constrained('employee_departments')->onDelete('set null')->onUpdate('cascade');
             $table->foreignId('division_id')->nullable()->constrained('employee_divisions')->onDelete('set null')->onUpdate('cascade');
+            $table->foreignId('position_id')->nullable()->constrained('employee_positions')->onDelete('set null')->onUpdate('cascade');
             $table->date('usage_start_date');
             $table->date('usage_end_date')->nullable();
             $table->timestamps();
