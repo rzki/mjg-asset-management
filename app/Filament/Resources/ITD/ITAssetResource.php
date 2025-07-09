@@ -143,6 +143,14 @@ class ITAssetResource extends Resource
                     ->getStateUsing(fn ($record) => $record->employee ? "{$record->employee->name}" : 'N/A')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('position')
+                    ->label('Position')
+                    ->getStateUsing(function ($record) {
+                        $latestUsage = $record->usageHistory()->latest('created_at')->first();
+                        return $latestUsage && $latestUsage->position ? $latestUsage->position->name : 'N/A';
+                    })
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('pic_id')
                     ->label('Created By')
                     ->formatStateUsing(function ($record){
