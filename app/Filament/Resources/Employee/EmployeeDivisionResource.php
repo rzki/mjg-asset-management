@@ -44,14 +44,6 @@ class EmployeeDivisionResource extends Resource
                             ->label('Initial')
                             ->required()
                             ->maxLength(3),
-                        Select::make('department_id')
-                            ->label('Department')
-                            ->relationship('department', 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->columnSpanFull(),
                     ]),
             ]);
     }

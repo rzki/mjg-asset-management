@@ -80,9 +80,7 @@ class EmployeePositionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEmployeePositions::route('/'),
-            'create' => Pages\CreateEmployeePosition::route('/create'),
-            'edit' => Pages\EditEmployeePosition::route('/{record}/edit'),
+            'index' => Pages\ManageEmployeePositions::route('/'),
         ];
     }
 }
