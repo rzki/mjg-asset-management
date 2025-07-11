@@ -65,7 +65,7 @@ class ITAssetResource extends Resource
                     ->afterStateUpdated(function ($state, callable $set) {
                         // Fetch the remarks from the selected category
                         $category = ITAssetCategory::find($state);
-                        $set('asset_remark', $category?->remarks ?? '');
+                        $set('asset_remarks', $category?->remarks ?? '');
                     }),     
                 DatePicker::make('asset_year_bought')
                     ->label('Asset Year')
@@ -104,7 +104,7 @@ class ITAssetResource extends Resource
                     ->label('History/Notes')
                     ->maxLength(500)
                     ->columnSpanFull(),
-                Textarea::make('asset_remark')
+                Textarea::make('asset_remarks')
                     ->label('Remark')
                     ->maxLength(500)
                     ->autosize()
@@ -308,7 +308,7 @@ class ITAssetResource extends Resource
                         TextEntry::make('asset_notes')
                             ->label('Notes')
                             ->limit(100),
-                        TextEntry::make('asset_remark')
+                        TextEntry::make('asset_remarks')
                             ->label('Remark')
                             ->limit(100),
                     ]),

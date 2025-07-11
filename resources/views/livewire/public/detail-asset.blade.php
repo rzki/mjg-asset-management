@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                     <th class="text-start">Remarks</th>
-                    <td>{{ $asset->asset_remark ?? 'N/A' }}</td>
+                    <td>{{ $asset->asset_remarks ?? 'N/A' }}</td>
                 </tr>
             </tbody>
         </table>
