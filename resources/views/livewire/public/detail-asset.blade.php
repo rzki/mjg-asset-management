@@ -45,7 +45,7 @@
                     <td>{{ $asset->employee->name ?? 'N/A' }}</td>
                 </tr>
                 <tr>
-                    <th class="text-start">Entry Created By</th>
+                    <th class="text-start">Entry By</th>
                     <td>
                         @if($asset->user && $asset->user->employee)
                             {{ $asset->user->employee->initial . ' ' . strtoupper($asset->created_at->format('d M Y')) }}
@@ -53,6 +53,10 @@
                             N/A
                         @endif
                     </td>
+                </tr>
+                <tr>
+                    <th class="text-start">Remarks</th>
+                    <td>{{ $asset->asset_remark ?? 'N/A' }}</td>
                 </tr>
             </tbody>
         </table>
