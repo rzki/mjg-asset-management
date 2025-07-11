@@ -179,6 +179,7 @@ class UsageHistoryRelationManager extends RelationManager
                             $record->asset->asset_user_id = $record->employee_id;
                             $record->asset->save();
                         }
+
                         $previousUsage = $record->asset
                             ->usageHistory()
                             ->where('id', '<', $record->id)
@@ -198,10 +199,20 @@ class UsageHistoryRelationManager extends RelationManager
                     ->modalHeading('Edit Usage History')
                     ->successNotificationTitle('Usage History Updated Successfully')
                     ->after(function ($record) {
-                        // After editing, update the asset's asset_user_id to the employee_id of the latest usage history
+                        // Update the asset based on the edited usage history
                         if ($record->asset) {
-                            $record->asset->asset_location_id = $record->asset_location_id;
-                            $record->asset->asset_user_id = $record->employee_id;
+                            // If usage history has an end date, move asset to Head Office and clear user
+                            if (!is_null($record->usage_end_date)) {
+                                $headOfficeLocation = \App\Models\ITAssetLocation::where('name', 'Head Office')->first();
+                                if ($headOfficeLocation) {
+                                    $record->asset->asset_location_id = $headOfficeLocation->id;
+                                    $record->asset->asset_user_id = null;
+                                }
+                            } else {
+                                // If no end date, update asset to current usage location and user
+                                $record->asset->asset_location_id = $record->asset_location_id;
+                                $record->asset->asset_user_id = $record->employee_id;
+                            }
                             $record->asset->save();
                         }
                     }),

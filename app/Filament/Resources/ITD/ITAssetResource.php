@@ -294,16 +294,11 @@ class ITAssetResource extends Resource
                         TextEntry::make('asset_condition')
                             ->label('Condition'),
                         TextEntry::make('location.name')
-                            ->label('Location')
-                            ->getStateUsing(function ($record) {
-                                $latestUsage = $record->usageHistory()->latest('created_at')->first();
-                                return $latestUsage && $latestUsage->location ? $latestUsage->location->name : ($record->location ? $record->location->name : 'N/A');
-                            }),
+                            ->label('Location'),
                         TextEntry::make('employee.name')
                             ->label('Asset User')
                             ->getStateUsing(function ($record) {
-                                $latestUsage = $record->usageHistory()->latest('created_at')->first();
-                                return $latestUsage && $latestUsage->employee ? $latestUsage->employee->name : ($record->employee ? $record->employee->name : 'N/A');
+                                return $record->employee ? $record->employee->name : 'N/A';
                             }),
                         TextEntry::make('asset_notes')
                             ->label('Notes')
