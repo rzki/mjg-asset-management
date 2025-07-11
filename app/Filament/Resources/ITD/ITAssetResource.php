@@ -143,7 +143,11 @@ class ITAssetResource extends Resource
                 TextColumn::make('asset_user_id')
                     ->label('User')
                     ->getStateUsing(fn ($record) => $record->employee ? "{$record->employee->name}" : 'N/A')
-                    ->searchable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => 
+                        $query->whereHas('employee', fn (Builder $query) => 
+                            $query->where('name', 'like', "%{$search}%")
+                        )
+                    )
                     ->sortable(),
                 TextColumn::make('position')
                     ->label('Position')
@@ -152,7 +156,7 @@ class ITAssetResource extends Resource
                         return $latestUsage && $latestUsage->position ? $latestUsage->position->name : 'N/A';
                     })
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(false),
                 TextColumn::make('pic_id')
                     ->label('Created By')
                     ->formatStateUsing(function ($record){

@@ -160,6 +160,9 @@ class UsageHistoryRelationManager extends RelationManager
                 TextColumn::make('usage_end_date')
                     ->label('End Date')
                     ->date(),
+                // TextColumn::make('updated_at')
+                //     ->label('Last Updated')
+                //     ->date(),
             ])
             ->filters([
                 //
