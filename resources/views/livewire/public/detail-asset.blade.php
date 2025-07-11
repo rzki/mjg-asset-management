@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <th class="text-start">Location</th>
-                    <td>{{ $asset->asset_location ?? 'N/A' }}</td>
+                    <td>{{ $asset->location->name ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th class="text-start">User</th>
