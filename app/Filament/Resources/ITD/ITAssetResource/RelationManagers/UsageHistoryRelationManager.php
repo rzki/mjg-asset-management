@@ -179,7 +179,7 @@ class UsageHistoryRelationManager extends RelationManager
                             $record->asset->asset_user_id = $record->employee_id;
                             $record->asset->save();
                         }
-
+                        // If this is the first usage history, set the asset's asset_location_id
                         $previousUsage = $record->asset
                             ->usageHistory()
                             ->where('id', '<', $record->id)
@@ -191,6 +191,11 @@ class UsageHistoryRelationManager extends RelationManager
                             $previousUsage->asset_location_id = $record->asset_location_id;
                             $previousUsage->usage_end_date = $record->usage_start_date;
                             $previousUsage->save();
+                        }
+                        // if current asset condition is new and usage history is null, after usage history is created, set asset_condition to used
+                        if ($record->asset && $record->asset->asset_condition === 'New') {
+                            $record->asset->asset_condition = 'Used';
+                            $record->asset->save();
                         }
                     }),
             ])
