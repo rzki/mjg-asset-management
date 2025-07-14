@@ -186,16 +186,24 @@ class UsageHistoryRelationManager extends RelationManager
                             ->orderByDesc('usage_start_date')
                             ->orderByDesc('id')
                             ->first();
-
                         if ($previousUsage && is_null($previousUsage->usage_end_date)) {
                             $previousUsage->asset_location_id = $record->asset_location_id;
                             $previousUsage->usage_end_date = $record->usage_start_date;
                             $previousUsage->save();
                         }
-                        // if current asset condition is new and usage history is null, after usage history is created, set asset_condition to used
+
+                        // if current asset condition is new and usage history is null, after usage history is created, set asset_condition to first hand
                         if ($record->asset && $record->asset->asset_condition === 'New') {
-                            $record->asset->asset_condition = 'Used';
+                            $record->asset->asset_condition = 'First Hand';
                             $record->asset->save();
+                        }
+                        // if current asset condition is first hand and usage history is only 1, after second and more usage history is created, set asset_condition to used
+                        if ($record->asset && $record->asset->asset_condition === 'First Hand') {
+                            $usageHistoryCount = $record->asset->usageHistory()->count();
+                            if ($usageHistoryCount >= 2) {
+                                $record->asset->asset_condition = 'Used';
+                                $record->asset->save();
+                            }
                         }
                     }),
             ])
