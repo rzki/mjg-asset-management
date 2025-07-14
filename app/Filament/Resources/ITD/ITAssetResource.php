@@ -107,6 +107,7 @@ class ITAssetResource extends Resource
                 Textarea::make('asset_remarks')
                     ->label('Remark')
                     ->maxLength(500)
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('asset_remarks', strtoupper($state)))
                     ->autosize()
                     ->reactive()
                     ->columnSpanFull(),
