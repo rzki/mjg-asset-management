@@ -127,6 +127,11 @@ class ITAssetResource extends Resource
                     ->label('Asset Code')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('asset_serial_number')
+                    ->label('Serial Number')
+                    ->getStateUsing(fn ($record) => $record->asset_serial_number ? strtoupper($record->asset_serial_number) : 'N/A')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('asset_year_bought')
                     ->label('Asset Year')
                     ->sortable()
@@ -153,6 +158,9 @@ class ITAssetResource extends Resource
                     ->label('Position')
                     ->getStateUsing(function ($record) {
                         $latestUsage = $record->usageHistory()->latest('created_at')->first();
+                        if ($latestUsage && $latestUsage->usage_end_date) {
+                            return 'N/A';
+                        }
                         return $latestUsage && $latestUsage->position ? $latestUsage->position->name : 'N/A';
                     })
                     ->sortable()
