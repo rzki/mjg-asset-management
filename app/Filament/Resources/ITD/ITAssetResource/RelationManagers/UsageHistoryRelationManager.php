@@ -189,34 +189,7 @@ class UsageHistoryRelationManager extends RelationManager
                     ->successNotificationTitle('Usage history deleted successfully.')
                     ->requiresConfirmation()
                     ->before(function ($record) {
-                        // Before deleting, set asset_user_id to the employee_id of the latest previous usage history (if any)
-                        if ($record->asset) {
-                            // Find the previous usage history
-                            $previousUsage = $record->asset
-                                ->usageHistory()
-                                ->where('id', '<', $record->id)
-                                ->orderByDesc('usage_start_date')
-                                ->orderByDesc('id')
-                                ->first();
-
-                            // Update asset's user and location to previous usage or null
-                            $record->asset->asset_user_id = $previousUsage ? $previousUsage->employee_id : null;
-                            $record->asset->asset_location_id = $previousUsage ? $previousUsage->asset_location_id : null;
-                            $record->asset->save();
-
-                            // If this record is the latest, set previous usage_end_date to null
-                            $latestUsage = $record->asset
-                                ->usageHistory()
-                                ->where('id', '!=', $record->id)
-                                ->orderByDesc('usage_start_date')
-                                ->orderByDesc('id')
-                                ->first();
-
-                            if ($previousUsage && $latestUsage && $previousUsage->id === $latestUsage->id) {
-                                $previousUsage->usage_end_date = null;
-                                $previousUsage->save();
-                            }
-                        }
+                        $this->handleUsageHistoryDeletion($record);
                     }),
             ])
             ->bulkActions([
@@ -336,5 +309,49 @@ class UsageHistoryRelationManager extends RelationManager
         }
 
         $record->asset->save();
+    }
+
+    /**
+     * Handle usage history deletion logic.
+     */
+    private function handleUsageHistoryDeletion($record)
+    {
+        if (!$record->asset) {
+            return;
+        }
+
+        // Find the previous usage history
+        $previousUsage = $record->asset
+            ->usageHistory()
+            ->where('id', '<', $record->id)
+            ->orderByDesc('usage_start_date')
+            ->orderByDesc('id')
+            ->first();
+
+        // Revert asset to previous usage state or clear if no previous usage
+        $record->asset->asset_user_id = $previousUsage?->employee_id;
+        $record->asset->asset_location_id = $previousUsage?->asset_location_id;
+        $record->asset->save();
+
+        // If deleting the latest usage, reactivate the previous usage
+        if ($previousUsage && $this->isLatestUsage($record)) {
+            $previousUsage->usage_end_date = null;
+            $previousUsage->save();
+        }
+    }
+
+    /**
+     * Check if the given record is the latest usage for the asset.
+     */
+    private function isLatestUsage($record)
+    {
+        $latestUsage = $record->asset
+            ->usageHistory()
+            ->where('id', '!=', $record->id)
+            ->orderByDesc('usage_start_date')
+            ->orderByDesc('id')
+            ->first();
+
+        return !$latestUsage || $record->usage_start_date >= $latestUsage->usage_start_date;
     }
 }
