@@ -173,38 +173,7 @@ class UsageHistoryRelationManager extends RelationManager
                     ->modalHeading('Assign Asset')
                     ->successNotificationTitle('Asset Assigned Successfully')
                     ->after(function ($record) {
-                        // Update the asset's asset_user_id to the employee_id of the new usage history
-                        if ($record->asset) {
-                            $record->asset->asset_location_id = $record->asset_location_id;
-                            $record->asset->asset_user_id = $record->employee_id;
-                            $record->asset->save();
-                        }
-                        // If this is the first usage history, set the asset's asset_location_id
-                        $previousUsage = $record->asset
-                            ->usageHistory()
-                            ->where('id', '<', $record->id)
-                            ->orderByDesc('usage_start_date')
-                            ->orderByDesc('id')
-                            ->first();
-                        if ($previousUsage && is_null($previousUsage->usage_end_date)) {
-                            $previousUsage->asset_location_id = $record->asset_location_id;
-                            $previousUsage->usage_end_date = $record->usage_start_date;
-                            $previousUsage->save();
-                        }
-
-                        // if current asset condition is new and usage history is null, after usage history is created, set asset_condition to first hand
-                        if ($record->asset && $record->asset->asset_condition === 'New') {
-                            $record->asset->asset_condition = 'First Hand';
-                            $record->asset->save();
-                        }
-                        // if current asset condition is first hand and usage history is only 1, after second and more usage history is created, set asset_condition to used
-                        if ($record->asset && $record->asset->asset_condition === 'First Hand') {
-                            $usageHistoryCount = $record->asset->usageHistory()->count();
-                            if ($usageHistoryCount >= 2) {
-                                $record->asset->asset_condition = 'Used';
-                                $record->asset->save();
-                            }
-                        }
+                        $this->handleAssetAssignment($record);
                     }),
             ])
             ->actions([
@@ -212,22 +181,7 @@ class UsageHistoryRelationManager extends RelationManager
                     ->modalHeading('Edit Usage History')
                     ->successNotificationTitle('Usage History Updated Successfully')
                     ->after(function ($record) {
-                        // Update the asset based on the edited usage history
-                        if ($record->asset) {
-                            // If usage history has an end date, move asset to Head Office and clear user
-                            if (!is_null($record->usage_end_date)) {
-                                $headOfficeLocation = \App\Models\ITAssetLocation::where('name', 'Head Office')->first();
-                                if ($headOfficeLocation) {
-                                    $record->asset->asset_location_id = $headOfficeLocation->id;
-                                    $record->asset->asset_user_id = null;
-                                }
-                            } else {
-                                // If no end date, update asset to current usage location and user
-                                $record->asset->asset_location_id = $record->asset_location_id;
-                                $record->asset->asset_user_id = $record->employee_id;
-                            }
-                            $record->asset->save();
-                        }
+                        $this->handleAssetUpdate($record);
                     }),
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Are you sure you want to delete this usage history?')
@@ -283,5 +237,104 @@ class UsageHistoryRelationManager extends RelationManager
                     }),
                 ]),
             ]);
+    }
+
+    /**
+     * Get the Head Office location.
+     */
+    private function getHeadOfficeLocation()
+    {
+        return \App\Models\ITAssetLocation::where('name', 'Head Office')->first();
+    }
+
+    /**
+     * Move asset to Head Office and clear user assignment.
+     */
+    private function moveAssetToHeadOffice($asset)
+    {
+        $headOfficeLocation = $this->getHeadOfficeLocation();
+        if ($headOfficeLocation) {
+            $asset->asset_location_id = $headOfficeLocation->id;
+            $asset->asset_user_id = null;
+        }
+    }
+
+    /**
+     * Handle asset assignment logic after creating usage history.
+     */
+    private function handleAssetAssignment($record)
+    {
+        if (!$record->asset) {
+            return;
+        }
+
+        // Update asset location and user
+        $record->asset->asset_location_id = $record->asset_location_id;
+        $record->asset->asset_user_id = $record->employee_id;
+
+        // Handle previous usage history
+        $previousUsage = $record->asset
+            ->usageHistory()
+            ->where('id', '<', $record->id)
+            ->orderByDesc('usage_start_date')
+            ->orderByDesc('id')
+            ->first();
+
+        if ($previousUsage && is_null($previousUsage->usage_end_date)) {
+            // Only update the end date, keep original location for historical accuracy
+            $previousUsage->usage_end_date = $record->usage_start_date;
+            $previousUsage->save();
+        }
+
+        // Handle asset condition changes
+        $this->updateAssetCondition($record);
+
+        $record->asset->save();
+    }
+
+    /**
+     * Update asset condition based on usage history.
+     */
+    private function updateAssetCondition($record)
+    {
+        $asset = $record->asset;
+        
+        if ($asset->asset_condition === 'New') {
+            // If usage has ended, move to Head Office
+            if ($record->usage_end_date !== null) {
+                $this->moveAssetToHeadOffice($asset);
+            }
+            $asset->asset_condition = 'First Hand';
+        } elseif ($asset->asset_condition === 'First Hand') {
+            $usageHistoryCount = $asset->usageHistory()->count();
+            if ($usageHistoryCount >= 2) {
+                // If usage has ended, move to Head Office
+                if ($record->usage_end_date !== null) {
+                    $this->moveAssetToHeadOffice($asset);
+                }
+                $asset->asset_condition = 'Used';
+            }
+        }
+    }
+
+    /**
+     * Handle asset update logic after editing usage history.
+     */
+    private function handleAssetUpdate($record)
+    {
+        if (!$record->asset) {
+            return;
+        }
+
+        if (!is_null($record->usage_end_date)) {
+            // If usage has ended, move asset to Head Office and clear user
+            $this->moveAssetToHeadOffice($record->asset);
+        } else {
+            // If no end date, update asset to current usage location and user
+            $record->asset->asset_location_id = $record->asset_location_id;
+            $record->asset->asset_user_id = $record->employee_id;
+        }
+
+        $record->asset->save();
     }
 }
