@@ -27,8 +27,8 @@ class ITAssetWidget extends BaseWidget
                 ->count();
 
             // Available stat with category in label
-            $stats[] = Stat::make("{$category->name} Available", $availableAssets)
-                ->description("Available {$category->name} assets")
+            $stats[] = Stat::make("{$category->name}", $availableAssets)
+                ->description("Available")
                 ->color('success')
                 ->icon('heroicon-o-check-circle')
                 ->url(ITAssetResource::getUrl('index', [
@@ -44,8 +44,8 @@ class ITAssetWidget extends BaseWidget
                 ]));
 
             // In Use stat with category in label
-            $stats[] = Stat::make("{$category->name} In Use", $inUseAssets)
-                ->description("In use {$category->name} assets")
+            $stats[] = Stat::make("{$category->name}", $inUseAssets)
+                ->description("In use")
                 ->color('warning')
                 ->icon('heroicon-o-user')
                 ->url(ITAssetResource::getUrl('index', [
@@ -61,8 +61,8 @@ class ITAssetWidget extends BaseWidget
                 ]));
 
             // Total stat with category in label
-            $stats[] = Stat::make("{$category->name} Total", $totalAssets)
-                ->description("Total {$category->name} assets")
+            $stats[] = Stat::make("{$category->name}", $totalAssets)
+                ->description("Total")
                 ->color('primary')
                 ->icon('heroicon-o-computer-desktop')
                 ->url(ITAssetResource::getUrl('index', [
