@@ -23,7 +23,7 @@ class CreateITAsset extends CreateRecord
     {
         $data['assetId'] = Str::orderedUuid();
         $data['asset_location_id'] = ITAssetLocation::where('name', 'Head Office')->value('id');
-
+        $data['asset_remarks'] = strtoupper($data['asset_remarks'] ?? '');
         $data['pic_id'] = auth()->user()->id;
         $route = route('assets.show', ['assetId' => $data['assetId']]);
 
