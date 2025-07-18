@@ -26,9 +26,11 @@ class ITAssetWidget extends BaseWidget
                 ->where('asset_user_id', null)
                 ->count();
 
-            // Available stat
-            $stats[] = Stat::make("Available", $availableAssets)
+            // Available stat with category in label
+            $stats[] = Stat::make("{$category->name} Available", $availableAssets)
+                ->description("Available {$category->name} assets")
                 ->color('success')
+                ->icon('heroicon-o-check-circle')
                 ->url(ITAssetResource::getUrl('index', [
                     'tableFilters' => [
                         'asset_category_id' => [
@@ -41,9 +43,11 @@ class ITAssetWidget extends BaseWidget
                     ],
                 ]));
 
-            // In Use stat
-            $stats[] = Stat::make("In Use", $inUseAssets)
+            // In Use stat with category in label
+            $stats[] = Stat::make("{$category->name} In Use", $inUseAssets)
+                ->description("In use {$category->name} assets")
                 ->color('warning')
+                ->icon('heroicon-o-user')
                 ->url(ITAssetResource::getUrl('index', [
                     'tableFilters' => [
                         'asset_category_id' => [
@@ -56,9 +60,11 @@ class ITAssetWidget extends BaseWidget
                     ],
                 ]));
 
-            // Total stat
-            $stats[] = Stat::make("Total", $totalAssets)
+            // Total stat with category in label
+            $stats[] = Stat::make("{$category->name} Total", $totalAssets)
+                ->description("Total {$category->name} assets")
                 ->color('primary')
+                ->icon('heroicon-o-computer-desktop')
                 ->url(ITAssetResource::getUrl('index', [
                     'tableFilters' => [
                         'asset_category_id' => [
