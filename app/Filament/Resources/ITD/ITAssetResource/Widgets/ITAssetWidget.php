@@ -46,7 +46,7 @@ class ITAssetWidget extends BaseWidget
             // In Use stat with category in label
             $stats[] = Stat::make("{$category->name}", $inUseAssets)
                 ->description("In use")
-                ->color('warning')
+                ->color('danger')
                 ->icon('heroicon-o-user')
                 ->url(ITAssetResource::getUrl('index', [
                     'tableFilters' => [
