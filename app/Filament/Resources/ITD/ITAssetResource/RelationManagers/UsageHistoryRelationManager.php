@@ -108,7 +108,11 @@ class UsageHistoryRelationManager extends RelationManager
                                 Forms\Components\TextInput::make('name')
                                     ->label('Division Name')
                                     ->required()
-                                    ->maxLength(255)
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('abbreviation')
+                                    ->label('Initial')
+                                    ->required()
+                                    ->maxLength(3)
                             ])
                             ->preload(),
                         Select::make('position_id')
