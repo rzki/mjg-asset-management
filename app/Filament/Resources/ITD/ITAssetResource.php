@@ -89,6 +89,21 @@ class ITAssetResource extends Resource
                             ->maxLength(100)
                             ->afterStateUpdated(fn ($state, callable $set) => $set('asset_serial_number', strtoupper($state))),  
                     ]),
+                TextInput::make('asset_price')
+                    ->label('Price')
+                    ->prefix('Rp')
+                    ->reactive()
+                    ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, ',', '.') : '')
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            // Remove any existing formatting first
+                            $cleanValue = preg_replace('/[^0-9]/', '', $state);
+                            // Format the number with thousand separators
+                            $formattedValue = number_format((int) $cleanValue, 0, ',', '.');
+                            $set('asset_price', $formattedValue);
+                        }
+                    })
+                    ->dehydrateStateUsing(fn ($state) => $state ? (int) str_replace('.', '', $state) : null),
                 Select::make('asset_condition')
                     ->label('Condition')
                     ->options([
@@ -98,7 +113,6 @@ class ITAssetResource extends Resource
                         'Defect' => 'Defect',
                         'Disposed' => 'Disposed',
                     ])
-                    ->columnSpanFull()
                     ->required(),
                 Textarea::make('asset_notes')
                     ->label('History/Notes')
@@ -299,6 +313,9 @@ class ITAssetResource extends Resource
                             }),
                         TextEntry::make('category.name')
                             ->label('Category'),
+                        TextEntry::make('asset_price')
+                            ->label('Price')
+                            ->formatStateUsing(fn ($state) => $state ? 'Rp. ' . number_format($state, 0, ',', '.') : 'N/A'),
                         TextEntry::make('asset_condition')
                             ->label('Condition'),
                         TextEntry::make('location.name')
