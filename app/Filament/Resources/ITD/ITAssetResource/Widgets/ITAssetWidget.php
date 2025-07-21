@@ -15,7 +15,9 @@ class ITAssetWidget extends BaseWidget
     protected function getStats(): array
     {
         $stats = [];
-        $categories = ITAssetCategory::orderBy('name')->get();
+        $categories = ITAssetCategory::withCount('assets')
+            ->orderBy('assets_count', 'desc')
+            ->get();
 
         foreach ($categories as $category) {
             $totalAssets = ITAsset::where('asset_category_id', $category->id)->count();
