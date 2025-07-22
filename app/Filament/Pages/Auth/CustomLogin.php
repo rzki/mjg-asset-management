@@ -10,7 +10,12 @@ use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 
 class CustomLogin extends BaseLogin
 {
-    protected ?string $heading = 'MJG Asset Management System';
+    protected ?string $heading = null;
+
+    public function getHeading(): string
+    {
+        return config('app.name');
+    }
 
     public function mount(): void
     {
