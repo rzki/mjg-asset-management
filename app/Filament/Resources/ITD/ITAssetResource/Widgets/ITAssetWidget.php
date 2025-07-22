@@ -15,18 +15,24 @@ class ITAssetWidget extends BaseWidget
     protected function getStats(): array
     {
         $stats = [];
-        $categories = ITAssetCategory::withCount('assets')
-            ->orderBy('assets_count', 'desc')
+        // Get categories with asset counts using Eloquent and sort them
+        $categoriesWithCounts = ITAssetCategory::withCount([
+                'assets as total_assets_count',
+                'assets as in_use_assets_count' => function ($query) {
+                    $query->whereNotNull('asset_user_id');
+                },
+                'assets as available_assets_count' => function ($query) {
+                    $query->whereNull('asset_user_id');
+                }
+            ])
+            ->orderByDesc('total_assets_count')
             ->get();
 
-        foreach ($categories as $category) {
-            $totalAssets = ITAsset::where('asset_category_id', $category->id)->count();
-            $inUseAssets = ITAsset::where('asset_category_id', $category->id)
-                ->where('asset_user_id', '!=', null)
-                ->count();
-            $availableAssets = ITAsset::where('asset_category_id', $category->id)
-                ->where('asset_user_id', null)
-                ->count();
+        foreach ($categoriesWithCounts as $category) {
+            // Use the counted values from withCount for efficiency
+            $totalAssets = $category->total_assets_count;
+            $inUseAssets = $category->in_use_assets_count;
+            $availableAssets = $category->available_assets_count;
 
             // Available stat with category in label
             $stats[] = Stat::make("{$category->name}", $availableAssets)

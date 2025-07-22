@@ -14,6 +14,6 @@ class ITAssetCategory extends Model
     }
     public function assets()
     {
-        return $this->hasMany(ITAsset::class, 'asset_category_id', 'name');
+        return $this->hasMany(ITAsset::class, 'asset_category_id', 'id');
     }
 }
