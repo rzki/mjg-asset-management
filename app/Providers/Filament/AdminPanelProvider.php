@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Resources\ITAssetResource;
 use App\Filament\Resources\ITAssetUsageHistoryResource;
+use App\Filament\Pages\Auth\CustomLogin;
 use App\Models\ITAssetUsageHistory;
 use Filament\Pages;
 use Filament\Panel;
@@ -36,9 +37,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('')
             ->spa()
-            ->login()
+            ->login(CustomLogin::class)
+            ->loginRouteSlug('login')
             ->profile()
             ->defaultThemeMode(ThemeMode::Light)
+            ->brandName('MJG Asset Management')
             ->brandLogo(asset('assets/images/LOGO-MEDQUEST-HD.png'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('assets/images/Medquest-Favicon.png'))
