@@ -10,7 +10,6 @@ return new class extends Migration {
         Schema::create('resource_permissions', function (Blueprint $table) {
             $table->id();
             $table->uuid('permissionId')->unique();
-            $table->string('role_name');
             $table->string('resource_name');
             $table->timestamps();
         });
