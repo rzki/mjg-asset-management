@@ -42,7 +42,7 @@ class ITAssetWidget extends BaseWidget
                 ->url(ITAssetResource::getUrl('index', [
                     'tableFilters' => [
                         'category_id' => [
-                            'value' => $category->name,
+                            'value' => $category->id,
                         ],
                         'asset_user_id' => [
                             'available' => 'true',
@@ -59,7 +59,7 @@ class ITAssetWidget extends BaseWidget
                 ->url(ITAssetResource::getUrl('index', [
                     'tableFilters' => [
                         'category_id' => [
-                            'value' => $category->name,
+                            'value' => $category->id,
                         ],
                         'asset_user_id' => [
                             'available' => 'false',
@@ -76,7 +76,7 @@ class ITAssetWidget extends BaseWidget
                 ->url(ITAssetResource::getUrl('index', [
                     'tableFilters' => [
                         'category_id' => [
-                            'value' => $category->name,
+                            'value' => $category->id,
                         ],
                     ],
                 ]));
